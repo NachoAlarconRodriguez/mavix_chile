@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mavix OS | Panel de Administración</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=12.0">
+  <style>
+    /* Estilos base específicos del dashboard de admin */
+    body {
+      background: #060608;
+      font-family: 'Inter', sans-serif;
+      color: #e2e8f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Pantalla de Carga de Seguridad */
+    #admin-lock-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #060608;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s ease;
+    }
+
+    .lock-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(0, 168, 232, 0.1);
+      border-top-color: var(--primary, #00a8e8);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Layout del Panel */
+    .admin-container {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .admin-sidebar {
+      width: 260px;
+      background: rgba(10, 10, 14, 0.6);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100%;
+      box-sizing: border-box;
+      z-index: 100;
+    }
+
+    .admin-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #fff;
+      text-decoration: none;
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .admin-logo span {
+      color: var(--primary, #00a8e8);
+    }
+
+    .admin-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex-grow: 1;
+    }
+
+    .admin-menu-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.2rem;
+      border-radius: 12px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .admin-menu-btn:hover,
+    .admin-menu-btn.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .admin-menu-btn.active {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.1) 0%, rgba(0, 168, 232, 0.1) 100%);
+      border: 1px solid rgba(0, 168, 232, 0.2);
+      color: var(--primary, #00a8e8);
+    }
+
+    .admin-menu-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .sidebar-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 1.5rem;
+    }
+
+    /* Área de Contenido Principal */
+    .admin-main {
+      flex-grow: 1;
+      margin-left: 260px;
+      padding: 3rem;
+      box-sizing: border-box;
+      min-height: 100vh;
+      background: radial-gradient(circle at 100% 0%, rgba(0, 168, 232, 0.05) 0%, transparent 40%);
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+
+    .admin-title-section h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .admin-title-section p {
+      margin: 0.5rem 0 0 0;
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+    }
+
+    .user-avatar-circle {
+      width: 28px;
+      height: 28px;
+      background: var(--primary, #00a8e8);
+      color: #000;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.8rem;
+    }
+
+    .user-email-text {
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+
+    /* Grid de Resumen / KPIs */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .kpi-card {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      padding: 1.8rem;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .kpi-label {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+
+    /* Secciones de Contenido */
+    .admin-section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .admin-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Panel de Leads */
+    .leads-table-container {
+      background: rgba(10, 10, 14, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .leads-header-bar {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .leads-search {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      color: #fff;
+      font-family: inherit;
+      width: 260px;
+    }
+
+    .leads-search:focus {
+      outline: none;
+      border-color: var(--primary, #00a8e8);
+    }
+
+    .leads-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .leads-table th {
+      padding: 1.2rem 1.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .leads-table td {
+      padding: 1.2rem 1.5rem;
+      font-size: 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      color: #cbd5e1;
+    }
+
+    .leads-table tr {
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .leads-table tr:hover {
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .lead-row-name {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .services-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .service-tag {
+      background: rgba(0, 168, 232, 0.08);
+      color: var(--primary, #00a8e8);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* CMS Lists */
+    .cms-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .cms-card {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      position: relative;
+    }
+
+    .cms-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cms-card-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary, #00a8e8);
+    }
+
+    .cms-card-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .cms-card-title h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    .cms-card-title p {
+      margin: 0.2rem 0 0 0;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .cms-card-body p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    .cms-card-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: auto;
+    }
+
+    .btn-cms {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.02);
+      color: #fff;
+      transition: all 0.2s ease;
+    }
+
+    .btn-cms:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-cms-primary {
+      background: linear-gradient(135deg, var(--secondary, #00e5ff) 0%, var(--primary, #00a8e8) 100%);
+      color: #000;
+      border: none;
+    }
+
+    .btn-cms-primary:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Modal de Edición (Popup) */
+    .admin-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(4, 4, 6, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .admin-modal.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .admin-modal-box {
+      background: #0c0c10;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .admin-modal.open .admin-modal-box {
+      transform: translateY(0);
+    }
+
+    .admin-modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .admin-modal-header h3 {
+      margin: 0;
+      color: #fff;
+    }
+
+    .admin-modal-close {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .admin-modal-body {
+      padding: 1.5rem;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .admin-form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .admin-form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+    }
+
+    .admin-form-group input,
+    .admin-form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+
+    .admin-form-group input:focus,
+    .admin-form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary, #00a8e8);
+    }
+
+    .admin-modal-footer {
+      padding: 1.25rem 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    /* =========================================================== */
+    /* VISUAL CMS — Fixed Overlay Layout                            */
+    /* =========================================================== */
+
+    /* No longer need to modify admin-main; VCMS is a fixed overlay */
+    .admin-main.vcms-active {
+      /* keep normal layout; the VCMS overlays on top */
+    }
+
+    /* Top bar — fixed at top of content area */
+    .vcms-topbar {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 260px;  /* sidebar width */
+      right: 0;
+      height: 58px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      background: rgba(6, 6, 8, 0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      z-index: 500;
+    }
+
+    .vcms-topbar.visible {
+      display: flex;
+    }
+
+    .vcms-topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .vcms-topbar-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--primary, #00a8e8);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .vcms-topbar-title svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .vcms-page-tabs {
+      display: flex;
+      gap: 0.25rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      padding: 3px;
+      backdrop-filter: blur(10px);
+    }
+
+    .vcms-page-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 1rem;
+      border-radius: 7px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: inherit;
+    }
+
+    .vcms-page-tab-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2;
+      transition: stroke 0.25s ease, transform 0.25s ease;
+    }
+
+    .vcms-page-tab-btn:hover {
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .vcms-page-tab-btn:hover svg {
+      transform: translateY(-1px);
+    }
+
+    .vcms-page-tab-btn.active {
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.16) 0%, rgba(0, 168, 232, 0.16) 100%);
+      border-color: rgba(0, 229, 255, 0.35);
+      box-shadow: 0 0 15px rgba(0, 168, 232, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .vcms-page-tab-btn.active svg {
+      stroke: #00e5ff;
+    }
+
+    .vcms-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .vcms-publish-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.3rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #00e5ff, #00a8e8);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .vcms-publish-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 168, 232, 0.4);
+    }
+
+    .vcms-publish-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .vcms-publish-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Split view container — fixed below topbar */
+    .vcms-split {
+      display: none;
+      position: fixed;
+      top: 58px;   /* topbar height */
+      left: 260px; /* sidebar width */
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      z-index: 499;
+      background: #060608;
+    }
+
+    .vcms-split.visible {
+      display: flex;
+    }
+
+
+
+    /* Right panel — live preview */
+    .vcms-preview {
+      flex: 1;
+      background: #0a0a10;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 1.5rem;
+      gap: 1rem;
+    }
+
+    .vcms-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .vcms-preview-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .vcms-preview-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px rgba(34, 197, 94, 0.8);
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Mock browser chrome */
+    .vcms-browser {
+      flex: 1;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.04);
+      transition: max-width 0.3s ease;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .vcms-browser.mobile-view {
+      max-width: 390px;
+    }
+
+    .vcms-browser-bar {
+      background: #0d0d14;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .vcms-browser-dots {
+      display: flex;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .vcms-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .vcms-dot.red   { background: #ef4444; }
+    .vcms-dot.yellow { background: #f59e0b; }
+    .vcms-dot.green  { background: #22c55e; }
+
+    .vcms-browser-url {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 0.28rem 0.75rem;
+      font-size: 0.75rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .vcms-browser-url svg {
+      width: 10px;
+      height: 10px;
+      color: #22c55e;
+      flex-shrink: 0;
+    }
+
+    .vcms-browser-url-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .vcms-browser-body {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #vcms-preview-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      background: #060608;
+    }
+
+    /* Loading overlay for iframe */
+    .vcms-iframe-loading {
+      position: absolute;
+      inset: 0;
+      background: #060608;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      z-index: 10;
+      transition: opacity 0.3s ease;
+    }
+
+    .vcms-iframe-loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .vcms-loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid rgba(0, 168, 232, 0.15);
+      border-top-color: var(--primary, #00a8e8);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .vcms-loading-text {
+      font-size: 0.8rem;
+      color: #475569;
+    }
+
+    /* Toast notification */
+    .vcms-toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.85rem 1.4rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      z-index: 9999;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      pointer-events: none;
+    }
+
+    .vcms-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .vcms-toast.success {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+    }
+
+    .vcms-toast.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    /* Estilos del editor de páginas (legacy, kept for non-vcms sections) */
+    .pages-tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .page-tab-btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .page-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .page-tab-btn.active {
+      color: var(--primary, #00a8e8);
+      background: rgba(0, 168, 232, 0.05);
+      border-color: rgba(0, 168, 232, 0.15);
+    }
+
+    .page-tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .page-tab-content.active {
+      display: block;
+    }
+
+    .section-card {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-card h3 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.2rem;
+      color: #fff;
+      border-left: 3px solid var(--primary, #00a8e8);
+      padding-left: 0.75rem;
+      text-transform: capitalize;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla de Carga/Bloqueo de Seguridad -->
+  <div id="admin-lock-screen">
+    <div class="lock-spinner"></div>
+    <p>Verificando credenciales de seguridad...</p>
+  </div>
+
+  <div class="admin-container">
+    
+    <!-- Sidebar de Navegación -->
+    <aside class="admin-sidebar">
+      <a href="index.html" class="admin-logo">MAVIX<span>OS</span></a>
+      
+      <nav class="admin-menu">
+        <button class="admin-menu-btn active" data-tab="leads-section">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+          Leads de Contacto
+        </button>
+        <button class="admin-menu-btn" data-tab="services-section">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          CMS Servicios
+        </button>
+        <button class="admin-menu-btn" data-tab="team-section">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+          CMS Equipo
+        </button>
+        <button class="admin-menu-btn" data-tab="pages-section">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+          CMS Páginas
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="admin-menu-btn" id="admin-logout-btn" style="color: #ef4444;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+          Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="admin-main">
+      
+      <!-- Cabecera -->
+      <header class="admin-header">
+        <div class="admin-title-section">
+          <h1 id="page-section-title">Leads de Contacto</h1>
+          <p id="page-section-subtitle">Gestión de cotizaciones y solicitudes recibidas.</p>
+        </div>
+        <div class="user-profile-badge">
+          <div class="user-avatar-circle" id="user-avatar-char">U</div>
+          <span class="user-email-text" id="user-email-display">admin@mavixchile.com</span>
+        </div>
+      </header>
+
+      <!-- KPI Summary Row -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">Leads Totales</span>
+          <span class="kpi-value" id="kpi-leads-count">0</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Servicios Activos</span>
+          <span class="kpi-value" id="kpi-services-count">6</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Equipo Registrado</span>
+          <span class="kpi-value" id="kpi-team-count">3</span>
+        </div>
+      </div>
+
+      <!-- SECCIÓN: LEADS -->
+      <section id="leads-section" class="admin-section active">
+        <div class="leads-table-container">
+          <div class="leads-header-bar">
+            <h3 style="margin:0;">Bandeja de Entrada</h3>
+            <input type="text" class="leads-search" id="leads-search-input" placeholder="Buscar por nombre o correo...">
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="leads-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Contacto</th>
+                  <th>Empresa</th>
+                  <th>Servicios Solicitados</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody id="leads-table-body">
+                <!-- Se poblará con JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN: SERVICIOS (CMS) -->
+      <section id="services-section" class="admin-section">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:1.5rem;">
+          <button class="btn-cms btn-cms-primary" onclick="openAddServiceModal()">+ Nuevo Servicio</button>
+        </div>
+        <div class="cms-list" id="services-cms-list">
+          <!-- Tarjetas de servicios cargadas desde la BD -->
+        </div>
+      </section>
+
+      <!-- SECCIÓN: EQUIPO (CMS) -->
+      <section id="team-section" class="admin-section">
+        <div class="cms-list" id="team-cms-list">
+          <!-- Tarjetas del equipo cargadas desde la BD -->
+        </div>
+      </section>
+
+      <!-- SECCIÓN: PÁGINAS (VISUAL CMS) -->
+      <!-- Este section está vacío — el Visual CMS se renderiza fuera del admin-main -->
+      <section id="pages-section" class="admin-section"></section>
+
+    </main>
+
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- VISUAL CMS — Topbar + Split View (outside admin-container)         -->
+  <!-- ================================================================== -->
+
+  <!-- Top Bar del Visual CMS -->
+  <div class="vcms-topbar" id="vcms-topbar">
+    <div class="vcms-topbar-left">
+      <div class="vcms-topbar-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+        Visual CMS
+      </div>
+
+      <!-- Page Tab Buttons -->
+      <div class="vcms-page-tabs" id="vcms-page-tabs">
+        <button class="vcms-page-tab-btn active" data-vcms-page="home" data-vcms-src="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          Inicio
+        </button>
+        <button class="vcms-page-tab-btn" data-vcms-page="nosotros" data-vcms-src="equipo.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          Nosotros
+        </button>
+        <button class="vcms-page-tab-btn" data-vcms-page="servicios" data-vcms-src="servicios.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+          Servicios
+        </button>
+        <button class="vcms-page-tab-btn" data-vcms-page="casos" data-vcms-src="casos.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2 2h5l2 3h9a2 2 0 0 1 2 2z"/>
+          </svg>
+          Casos
+        </button>
+        <button class="vcms-page-tab-btn" data-vcms-page="contacto" data-vcms-src="contacto.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          Contacto
+        </button>
+      </div>
+    </div>
+
+    <div class="vcms-topbar-right">
+      <button class="vcms-publish-btn" id="vcms-publish-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Publicar Cambios
+      </button>
+    </div>
+  </div>
+
+  <!-- Split View Container -->
+  <div class="vcms-split" id="vcms-split">
+
+    <!-- Right Panel: Live Preview -->
+    <div class="vcms-preview">
+      <div class="vcms-preview-header">
+        <div class="vcms-preview-badge">Vista Previa en Vivo</div>
+      </div>
+
+      <!-- Mock Browser Chrome -->
+      <div class="vcms-browser" id="vcms-browser">
+        <div class="vcms-browser-bar">
+          <div class="vcms-browser-dots">
+            <span class="vcms-dot red"></span>
+            <span class="vcms-dot yellow"></span>
+            <span class="vcms-dot green"></span>
+          </div>
+          <div class="vcms-browser-url">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+            <span class="vcms-browser-url-text" id="vcms-url-display">localhost:8000/index.html</span>
+          </div>
+        </div>
+        <div class="vcms-browser-body">
+          <!-- Loading Overlay -->
+          <div class="vcms-iframe-loading" id="vcms-iframe-loading">
+            <div class="vcms-loading-spinner"></div>
+            <span class="vcms-loading-text">Cargando vista previa...</span>
+          </div>
+          <!-- The live site preview -->
+          <iframe id="vcms-preview-iframe" src="index.html" title="Vista previa del sitio web"></iframe>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="vcms-toast" id="vcms-toast"></div>
+
+  <!-- Modal Confirmación Personalizado -->
+  <div class="admin-modal" id="admin-confirm-modal">
+    <div class="admin-modal-box" style="max-width: 420px; text-align: center; padding: 2.2rem 1.75rem;">
+      <div style="width: 54px; height: 54px; border-radius: 50%; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; color: #ef4444;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <h3 id="admin-confirm-title" style="font-size: 1.2rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem;">Confirmar Acción</h3>
+      <p id="admin-confirm-message" style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 1.75rem; line-height: 1.55;">¿Estás seguro de que deseas realizar esta acción?</p>
+      <div style="display: flex; gap: 0.75rem; justify-content: center;">
+        <button class="btn-cms" onclick="closeAdminModal('admin-confirm-modal')" style="flex: 1; padding: 0.65rem 1rem; border-radius: 8px;">Cancelar</button>
+        <button class="btn-cms btn-cms-primary" id="admin-confirm-accept-btn" style="flex: 1; padding: 0.65rem 1rem; border-radius: 8px; background: linear-gradient(135deg, #ef4444, #dc2626); border-color: #ef4444; color: #fff;">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detalle del Lead -->
+  <div class="admin-modal" id="lead-detail-modal">
+    <div class="admin-modal-box">
+      <div class="admin-modal-header">
+        <h3>Detalle del Lead</h3>
+        <button class="admin-modal-close" onclick="closeAdminModal('lead-detail-modal')">&times;</button>
+      </div>
+      <div class="admin-modal-body" id="lead-detail-body">
+        <!-- Rellenado dinámicamente -->
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn-cms" onclick="closeAdminModal('lead-detail-modal')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Editar Servicio -->
+  <div class="admin-modal" id="edit-service-modal">
+    <div class="admin-modal-box">
+      <div class="admin-modal-header">
+        <h3>Editar Servicio</h3>
+        <button class="admin-modal-close" onclick="closeAdminModal('edit-service-modal')">&times;</button>
+      </div>
+      <form id="edit-service-form">
+        <input type="hidden" id="edit-service-id">
+        <div class="admin-modal-body">
+          <div class="admin-form-group">
+            <label for="edit-service-title">Título del Servicio</label>
+            <input type="text" id="edit-service-title" required>
+          </div>
+          <div class="admin-form-group">
+            <label for="edit-service-desc">Descripción</label>
+            <textarea id="edit-service-desc" rows="4" required></textarea>
+          </div>
+          <div class="admin-form-group">
+            <label for="edit-service-icon">Código Icono SVG</label>
+            <textarea id="edit-service-icon" rows="3" placeholder="Pegar código <svg>..."></textarea>
+          </div>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" class="btn-cms" onclick="closeAdminModal('edit-service-modal')">Cancelar</button>
+          <button type="submit" class="btn-cms btn-cms-primary" id="save-service-btn">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Agregar Servicio -->
+  <div class="admin-modal" id="add-service-modal">
+    <div class="admin-modal-box">
+      <div class="admin-modal-header">
+        <h3>Nuevo Servicio</h3>
+        <button class="admin-modal-close" onclick="closeAdminModal('add-service-modal')">&times;</button>
+      </div>
+      <form id="add-service-form">
+        <div class="admin-modal-body">
+          <div class="admin-form-group">
+            <label for="add-service-key">Clave del Servicio (Única, minúsculas, sin espacios)</label>
+            <input type="text" id="add-service-key" required placeholder="Ej: seo, email-marketing">
+          </div>
+          <div class="admin-form-group">
+            <label for="add-service-title">Título del Servicio</label>
+            <input type="text" id="add-service-title" required placeholder="Ej: Posicionamiento SEO">
+          </div>
+          <div class="admin-form-group">
+            <label for="add-service-desc">Descripción</label>
+            <textarea id="add-service-desc" rows="4" required placeholder="Describe el servicio de forma breve..."></textarea>
+          </div>
+          <div class="admin-form-group">
+            <label for="add-service-icon">Código Icono SVG</label>
+            <textarea id="add-service-icon" rows="3" placeholder="Pegar código <svg>..."></textarea>
+          </div>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" class="btn-cms" onclick="closeAdminModal('add-service-modal')">Cancelar</button>
+          <button type="submit" class="btn-cms btn-cms-primary" id="add-service-btn">Crear Servicio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Editar Integrante -->
+  <div class="admin-modal" id="edit-team-modal">
+    <div class="admin-modal-box">
+      <div class="admin-modal-header">
+        <h3>Editar Integrante del Equipo</h3>
+        <button class="admin-modal-close" onclick="closeAdminModal('edit-team-modal')">&times;</button>
+      </div>
+      <form id="edit-team-form">
+        <input type="hidden" id="edit-team-id">
+        <div class="admin-modal-body">
+          <div class="admin-form-group">
+            <label for="edit-team-name">Nombre Completo</label>
+            <input type="text" id="edit-team-name" required>
+          </div>
+          <div class="admin-form-group">
+            <label for="edit-team-role">Cargo / Rol</label>
+            <input type="text" id="edit-team-role" required>
+          </div>
+          <div class="admin-form-group">
+            <label for="edit-team-bio">Biografía</label>
+            <textarea id="edit-team-bio" rows="4" required></textarea>
+          </div>
+          <div class="admin-form-group">
+            <label for="edit-team-skills">Habilidades (Separadas por comas)</label>
+            <input type="text" id="edit-team-skills" placeholder="Ej: UI/UX, SEO, Figma">
+          </div>
+          <div class="admin-form-group">
+            <label for="edit-team-avatar">URL Foto de Retrato</label>
+            <input type="text" id="edit-team-avatar" required>
+          </div>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" class="btn-cms" onclick="closeAdminModal('edit-team-modal')">Cancelar</button>
+          <button type="submit" class="btn-cms btn-cms-primary" id="save-team-btn">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Supabase JS & Script de Admin -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Configuración de Supabase
+    const SUPABASE_URL = 'https://bhrdqdeuafqtbkdxajpo.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJocmRxZGV1YWZxdGJrZHhhanBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNzg5NDYsImV4cCI6MjA5NzY1NDk0Nn0.oeogO0OngILPpXxJiZKbixR7auEb6xfcm7O982e58H0';
+    
+    let supabaseClient = null;
+    if (window.supabase) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    // Datos locales para búsqueda/CMS
+    let localLeads = [];
+    let localServices = [];
+    let localTeam = [];
+    let localPageContents = [];
+
+    // 1. Verificación de Seguridad en Carga
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!supabaseClient) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // Comprobar sesión de autenticación
+      const { data: { session }, error } = await supabaseClient.auth.getSession();
+      
+      if (error || !session) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const email = session.user.email;
+
+      // Verificar que el correo exista en la tabla team_members
+      const { data: member, error: memberErr } = await supabaseClient
+        .from('team_members')
+        .select('email, name')
+        .eq('email', email)
+        .maybeSingle();
+
+      if (memberErr || !member) {
+        console.warn('Acceso bloqueado: No es miembro del equipo.', email);
+        await supabaseClient.auth.signOut();
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // Carga exitosa: ocultar pantalla de bloqueo
+      const lockScreen = document.getElementById('admin-lock-screen');
+      if (lockScreen) {
+        lockScreen.style.opacity = 0;
+        setTimeout(() => lockScreen.style.display = 'none', 400);
+      }
+
+      // Mostrar perfil en la cabecera
+      document.getElementById('user-email-display').textContent = email;
+      document.getElementById('user-avatar-char').textContent = member.name.charAt(0).toUpperCase();
+
+      // Inicializar carga de datos
+      await fetchDashboardData();
+      initUIListeners();
+    });
+
+    // 2. Carga de Datos desde Supabase
+    async function fetchDashboardData() {
+      try {
+        // Cargar Leads (orden descendente de fecha)
+        const { data: leads, error: leadsErr } = await supabaseClient
+          .from('leads')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!leadsErr && leads) {
+          localLeads = leads;
+          renderLeads(localLeads);
+          document.getElementById('kpi-leads-count').textContent = leads.length;
+        }
+
+        // Cargar Servicios
+        const { data: services, error: servErr } = await supabaseClient
+          .from('services')
+          .select('*')
+          .order('created_at', { ascending: true });
+
+        if (!servErr && services) {
+          localServices = services;
+          renderServicesCMS(localServices);
+          document.getElementById('kpi-services-count').textContent = services.length;
+        }
+
+        // Cargar Integrantes
+        const { data: team, error: teamErr } = await supabaseClient
+          .from('team_members')
+          .select('*')
+          .order('name', { ascending: true });
+
+        if (!teamErr && team) {
+          localTeam = team;
+          renderTeamCMS(localTeam);
+          document.getElementById('kpi-team-count').textContent = team.length;
+        }
+
+        // Cargar Contenidos de Páginas
+        const { data: pageContents, error: pcErr } = await supabaseClient
+          .from('page_contents')
+          .select('*')
+          .order('key', { ascending: true });
+
+        if (!pcErr && pageContents) {
+          localPageContents = pageContents;
+          renderPagesCMS(localPageContents);
+        }
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    }
+
+    // 3. Renderizado de Leads
+    function renderLeads(leads) {
+      const tbody = document.getElementById('leads-table-body');
+      tbody.innerHTML = '';
+
+      if (leads.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#64748b;">No hay leads registrados.</td></tr>`;
+        return;
+      }
+
+      leads.forEach(lead => {
+        const servicesList = Array.isArray(lead.services) 
+          ? lead.services.map(s => `<span class="service-tag">${s}</span>`).join('')
+          : '<span class="service-tag">No especificado</span>';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="lead-row-name">${lead.client_name}</td>
+          <td>
+            <div style="font-weight:500;">${lead.client_email}</div>
+            <div style="font-size:0.8rem;color:#64748b;">${lead.client_phone || 'Sin teléfono'}</div>
+          </td>
+          <td>
+            <div style="font-weight:500;">${lead.company_name}</div>
+            <div style="font-size:0.8rem;color:#64748b;">${lead.company_industry || 'N/A'} • ${lead.company_size || 'N/A'}</div>
+          </td>
+          <td><div class="services-tag-list">${servicesList}</div></td>
+          <td>${new Date(lead.created_at).toLocaleDateString('es-CL')}</td>
+        `;
+        
+        tr.addEventListener('click', () => showLeadDetails(lead));
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Modal de Detalle de Lead
+    function showLeadDetails(lead) {
+      const modalBody = document.getElementById('lead-detail-body');
+      const dateFormatted = new Date(lead.created_at).toLocaleString('es-CL');
+      
+      modalBody.innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:1rem;color:#cbd5e1;font-size:0.95rem;">
+          <div><strong style="color:#fff;">Fecha de Registro:</strong> ${dateFormatted}</div>
+          <div><strong style="color:#fff;">Nombre del Cliente:</strong> ${lead.client_name}</div>
+          <div><strong style="color:#fff;">Correo Electrónico:</strong> <a href="mailto:${lead.client_email}" style="color:var(--primary);text-decoration:none;">${lead.client_email}</a></div>
+          <div><strong style="color:#fff;">Teléfono / WhatsApp:</strong> ${lead.client_phone || 'No especificado'}</div>
+          <hr style="border:none;border-top:1px solid rgba(255,255,255,0.05);margin:0.5rem 0;">
+          <div><strong style="color:#fff;">Nombre de Empresa:</strong> ${lead.company_name}</div>
+          <div><strong style="color:#fff;">Sitio Web:</strong> ${lead.company_website ? `<a href="${lead.company_website}" target="_blank" style="color:var(--primary);">${lead.company_website}</a>` : 'N/A'}</div>
+          <div><strong style="color:#fff;">Redes Sociales:</strong> ${lead.company_social || 'N/A'}</div>
+          <div><strong style="color:#fff;">Tamaño / Rubro:</strong> ${lead.company_size || 'N/A'} • ${lead.company_industry || 'N/A'}</div>
+          <hr style="border:none;border-top:1px solid rgba(255,255,255,0.05);margin:0.5rem 0;">
+          <div>
+            <strong style="color:#fff;display:block;margin-bottom:0.5rem;">Servicios de Interés:</strong>
+            <div class="services-tag-list">
+              ${Array.isArray(lead.services) ? lead.services.map(s => `<span class="service-tag">${s}</span>`).join('') : 'Ninguno'}
+            </div>
+          </div>
+          <div>
+            <strong style="color:#fff;display:block;margin-bottom:0.4rem;">Mensaje del Proyecto:</strong>
+            <div style="background:rgba(255,255,255,0.02);padding:1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.05);white-space:pre-wrap;line-height:1.5;">${lead.client_message || 'Sin mensaje adicional.'}</div>
+          </div>
+        </div>
+      `;
+      openAdminModal('lead-detail-modal');
+    }
+
+    // 4. Renderizado CMS Servicios
+    function renderServicesCMS(services) {
+      const container = document.getElementById('services-cms-list');
+      container.innerHTML = '';
+
+      services.forEach(service => {
+        const card = document.createElement('div');
+        card.className = 'cms-card';
+        card.innerHTML = `
+          <div class="cms-card-header">
+            <div class="cms-card-icon">${service.icon || ''}</div>
+            <div class="cms-card-title">
+              <h3>${service.title}</h3>
+              <p>Clave: ${service.key}</p>
+            </div>
+          </div>
+          <div class="cms-card-body">
+            <p>${service.description}</p>
+          </div>
+          <div class="cms-card-actions">
+            <button class="btn-cms" style="color:#ef4444;border-color:rgba(239,68,68,0.2);" onclick="deleteService('${service.id}', '${service.title}')">Eliminar</button>
+            <button class="btn-cms" onclick="editService('${service.id}')">Editar</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Modal Editar Servicio
+    window.editService = function(id) {
+      const service = localServices.find(s => s.id === id);
+      if (!service) return;
+
+      document.getElementById('edit-service-id').value = service.id;
+      document.getElementById('edit-service-title').value = service.title;
+      document.getElementById('edit-service-desc').value = service.description;
+      document.getElementById('edit-service-icon').value = service.icon || '';
+
+      openAdminModal('edit-service-modal');
+    };
+
+    // Submit Guardar Servicio
+    document.getElementById('edit-service-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('edit-service-id').value;
+      const title = document.getElementById('edit-service-title').value.trim();
+      const description = document.getElementById('edit-service-desc').value.trim();
+      const icon = document.getElementById('edit-service-icon').value.trim();
+
+      const saveBtn = document.getElementById('save-service-btn');
+      saveBtn.textContent = 'Guardando...';
+      saveBtn.disabled = true;
+
+      const { error } = await supabaseClient
+        .from('services')
+        .update({ title, description, icon })
+        .eq('id', id);
+
+      if (error) {
+        showVcmsToast('Error al guardar servicio: ' + error.message, 'error');
+      } else {
+        closeAdminModal('edit-service-modal');
+        await fetchDashboardData();
+        showVcmsToast('Servicio actualizado con éxito.', 'success');
+      }
+      saveBtn.textContent = 'Guardar Cambios';
+      saveBtn.disabled = false;
+    });
+
+    // Modal Agregar Servicio
+    window.openAddServiceModal = function() {
+      document.getElementById('add-service-form').reset();
+      openAdminModal('add-service-modal');
+    };
+
+    // Submit Crear Servicio
+    document.getElementById('add-service-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const key = document.getElementById('add-service-key').value.trim().toLowerCase();
+      const title = document.getElementById('add-service-title').value.trim();
+      const description = document.getElementById('add-service-desc').value.trim();
+      const icon = document.getElementById('add-service-icon').value.trim();
+
+      const addBtn = document.getElementById('add-service-btn');
+      addBtn.textContent = 'Creando...';
+      addBtn.disabled = true;
+
+      const { error } = await supabaseClient
+        .from('services')
+        .insert([{ key, title, description, icon }]);
+
+      if (error) {
+        showVcmsToast('Error al crear servicio: ' + error.message, 'error');
+      } else {
+        closeAdminModal('add-service-modal');
+        await fetchDashboardData();
+        showVcmsToast('Servicio creado con éxito.', 'success');
+      }
+      addBtn.textContent = 'Crear Servicio';
+      addBtn.disabled = false;
+    });
+
+    // Eliminar Servicio
+    window.deleteService = function(id, title) {
+      showAdminConfirm(
+        'Eliminar Servicio',
+        `¿Estás seguro de que deseas eliminar el servicio "${title}"?`,
+        async () => {
+          const { error } = await supabaseClient
+            .from('services')
+            .delete()
+            .eq('id', id);
+
+          if (error) {
+            showVcmsToast('Error al eliminar servicio: ' + error.message, 'error');
+          } else {
+            showVcmsToast('Servicio eliminado con éxito.', 'success');
+            await fetchDashboardData();
+          }
+        }
+      );
+    };
+
+    // 5. Renderizado CMS Equipo
+    function renderTeamCMS(team) {
+      const container = document.getElementById('team-cms-list');
+      container.innerHTML = '';
+
+      team.forEach(member => {
+        const card = document.createElement('div');
+        card.className = 'cms-card';
+        card.innerHTML = `
+          <div class="cms-card-header">
+            <img class="cms-card-avatar" src="${member.avatar_url || 'assets/default_avatar.png'}" alt="${member.name}">
+            <div class="cms-card-title">
+              <h3>${member.name}</h3>
+              <p>${member.role}</p>
+            </div>
+          </div>
+          <div class="cms-card-body">
+            <p>${member.bio || ''}</p>
+            <div class="services-tag-list" style="margin-top:0.75rem;">
+              ${Array.isArray(member.skills) ? member.skills.map(s => `<span class="service-tag" style="background:rgba(255,255,255,0.05);color:#cbd5e1;">${s}</span>`).join('') : ''}
+            </div>
+          </div>
+          <div class="cms-card-actions">
+            <button class="btn-cms" onclick="editTeamMember('${member.id}')">Editar</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Modal Editar Integrante
+    window.editTeamMember = function(id) {
+      const member = localTeam.find(m => m.id === id);
+      if (!member) return;
+
+      document.getElementById('edit-team-id').value = member.id;
+      document.getElementById('edit-team-name').value = member.name;
+      document.getElementById('edit-team-role').value = member.role;
+      document.getElementById('edit-team-bio').value = member.bio || '';
+      document.getElementById('edit-team-skills').value = Array.isArray(member.skills) ? member.skills.join(', ') : '';
+      document.getElementById('edit-team-avatar').value = member.avatar_url || '';
+
+      openAdminModal('edit-team-modal');
+    };
+
+    // Submit Guardar Integrante
+    document.getElementById('edit-team-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('edit-team-id').value;
+      const name = document.getElementById('edit-team-name').value.trim();
+      const role = document.getElementById('edit-team-role').value.trim();
+      const bio = document.getElementById('edit-team-bio').value.trim();
+      const avatar_url = document.getElementById('edit-team-avatar').value.trim();
+      
+      const skillsInput = document.getElementById('edit-team-skills').value;
+      const skills = skillsInput ? skillsInput.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      const saveBtn = document.getElementById('save-team-btn');
+      saveBtn.textContent = 'Guardando...';
+      saveBtn.disabled = true;
+
+      const { error } = await supabaseClient
+        .from('team_members')
+        .update({ name, role, bio, avatar_url, skills })
+        .eq('id', id);
+
+      if (error) {
+        alert('Error al guardar integrante: ' + error.message);
+      } else {
+        closeAdminModal('edit-team-modal');
+        await fetchDashboardData();
+      }
+      saveBtn.textContent = 'Guardar Cambios';
+      saveBtn.disabled = false;
+    });
+
+    // 5.5. VISUAL CMS — Renderizado y Lógica del Panel de Edición con Preview en Vivo
+    
+    // Estado global del VCMS
+    const vcmsState = {
+      currentPage: 'home',
+      allContents: [],       // todos los contenidos de Supabase
+      pendingChanges: {},    // { key: newValue }
+    };
+
+    // Función: Muestra un toast
+    function showVcmsToast(message, type = 'success') {
+      const toast = document.getElementById('vcms-toast');
+      if (!toast) return;
+      toast.className = `vcms-toast ${type}`;
+      toast.innerHTML = type === 'success'
+        ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> ${message}`
+        : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${message}`;
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 3500);
+    }
+
+    // Función: Actualiza el elemento en el iframe en tiempo real
+    function updateIframePreview(key, value) {
+      const iframe = document.getElementById('vcms-preview-iframe');
+      if (!iframe) return;
+      try {
+        const iDoc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (!iDoc) return;
+        const el = iDoc.querySelector(`[data-cms-key="${key}"]`);
+        if (el) el.textContent = value;
+      } catch (e) {
+        // Cross-origin guard (shouldn't happen on same origin)
+      }
+    }
+
+
+
+    // Función: Habilita la edición directa (in-line editing) en TODOS los textos de la réplica del sitio (excluyendo navegación)
+    function setupIframeEditing(iframe) {
+      if (!iframe) return;
+      try {
+        const iDoc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (!iDoc) return;
+
+        // Inyectar estilos visuales para los elementos editables en la réplica
+        let style = iDoc.getElementById('vcms-inline-style');
+        if (!style) {
+          style = iDoc.createElement('style');
+          style.id = 'vcms-inline-style';
+          style.textContent = `
+            [data-cms-key], .vcms-editable {
+              outline: 1.5px dashed rgba(0, 229, 255, 0.4) !important;
+              outline-offset: 3px !important;
+              transition: outline 0.2s ease, background 0.2s ease !important;
+              cursor: text !important;
+              border-radius: 4px !important;
+            }
+            [data-cms-key]:hover, .vcms-editable:hover {
+              outline: 2px solid #00e5ff !important;
+              background: rgba(0, 229, 255, 0.1) !important;
+            }
+            [data-cms-key]:focus, .vcms-editable:focus {
+              outline: 2px solid #00e5ff !important;
+              background: rgba(0, 229, 255, 0.18) !important;
+              box-shadow: 0 0 15px rgba(0, 229, 255, 0.35) !important;
+            }
+            header .nav-links a, header .logo, footer .footer-nav-side a {
+              outline: none !important;
+              background: transparent !important;
+              cursor: pointer !important;
+            }
+          `;
+          iDoc.head.appendChild(style);
+        }
+
+        // Manejar clics en los enlaces de navegación del header/footer para cambiar de página en el CMS
+        const navLinks = iDoc.querySelectorAll('header .nav-links a, header .logo, header .btn, footer .footer-nav-side a');
+        navLinks.forEach(link => {
+          link.contentEditable = 'false';
+          link.removeAttribute('data-cms-key');
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const href = link.getAttribute('href') || '';
+            let targetPage = 'home';
+            let targetSrc = 'index.html';
+
+            if (href.includes('servicios')) {
+              targetPage = 'servicios';
+              targetSrc = 'servicios.html';
+            } else if (href.includes('casos')) {
+              targetPage = 'casos';
+              targetSrc = 'casos.html';
+            } else if (href.includes('equipo')) {
+              targetPage = 'nosotros';
+              targetSrc = 'equipo.html';
+            } else if (href.includes('contacto')) {
+              targetPage = 'contacto';
+              targetSrc = 'contacto.html';
+            } else if (href.includes('index')) {
+              targetPage = 'home';
+              targetSrc = 'index.html';
+            }
+
+            switchVcmsPage(targetPage, targetSrc);
+          });
+        });
+
+        // Seleccionar TODOS los elementos de texto (títulos, párrafos, etiquetas, tarjetas, estadísticas, etc.)
+        const selector = 'h1, h2, h3, h4, h5, h6, p, span, a, button, li, .stat-number, .stat-label, .section-tag, .section-title, .section-desc, .likes-number, .likes-label, .testimonial-quote, .brand-name';
+        const cmsElements = iDoc.querySelectorAll(selector);
+
+        cmsElements.forEach((el, index) => {
+          // Excluir enlaces de navegación principal, efecto #typewriter, SVGs y scripts
+          if (el.id === 'typewriter' || el.closest('#typewriter') || el.closest('svg') || el.closest('script')) return;
+          if (el.closest('header .nav-links') || el.closest('header .logo') || el.closest('footer .footer-nav-side')) return;
+
+          const text = (el.textContent || '').trim();
+          if (!text) return;
+
+          // Asignar un data-cms-key si el elemento no lo tiene asignado previamente
+          if (!el.dataset.cmsKey) {
+            const textSnippet = text.substring(0, 15).toLowerCase().replace(/[^a-z0-9]/g, '_');
+            el.dataset.cmsKey = `cms_${vcmsState.currentPage}_${el.tagName.toLowerCase()}_${index}_${textSnippet}`;
+          }
+
+          el.contentEditable = 'true';
+          el.classList.add('vcms-editable');
+
+          // Prevenir navegación accidental si el elemento es un enlace
+          el.addEventListener('click', (e) => {
+            if (el.tagName === 'A') e.preventDefault();
+          });
+
+          // Sincronizar en tiempo real cuando el usuario escribe directamente sobre la réplica del sitio
+          el.addEventListener('input', () => {
+            const key = el.dataset.cmsKey;
+            const val = el.innerText || el.textContent;
+            vcmsState.pendingChanges[key] = val;
+          });
+        });
+      } catch (e) {
+        console.error("Error setting up iframe inline editing:", e);
+      }
+    }
+
+    // Función: Cambia la página activa del VCMS
+    function switchVcmsPage(page, srcFile) {
+      vcmsState.currentPage = page;
+      vcmsState.pendingChanges = {};
+
+      // Update tab UI
+      document.querySelectorAll('.vcms-page-tab-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.vcmsPage === page);
+      });
+
+      // Update iframe
+      const iframe = document.getElementById('vcms-preview-iframe');
+      const loading = document.getElementById('vcms-iframe-loading');
+      const urlDisplay = document.getElementById('vcms-url-display');
+
+      if (loading) loading.classList.remove('hidden');
+      if (iframe) {
+        iframe.src = srcFile;
+        iframe.onload = () => {
+          if (loading) loading.classList.add('hidden');
+          // Re-apply any pending saved values from DB into new iframe
+          const pageContents = vcmsState.allContents.filter(c => c.page === page);
+          pageContents.forEach(item => updateIframePreview(item.key, item.content));
+          // Habilitar edición in-line sobre el iframe
+          setupIframeEditing(iframe);
+        };
+      }
+      if (urlDisplay) urlDisplay.textContent = `localhost:8000/${srcFile}`;
+    }
+
+    // Función principal de renderizado del VCMS (llamada desde fetchDashboardData)
+    function renderPagesCMS(contents) {
+      vcmsState.allContents = contents;
+      const iframe = document.getElementById('vcms-preview-iframe');
+      if (iframe) {
+        if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+          setupIframeEditing(iframe);
+        } else {
+          iframe.addEventListener('load', () => setupIframeEditing(iframe));
+        }
+      }
+    }
+
+    // 6. UI listeners y navegación
+    function initUIListeners() {
+      // Cambio de Pestañas (Tab buttons del sidebar)
+      const tabButtons = document.querySelectorAll('.admin-menu-btn[data-tab]');
+      const sections = document.querySelectorAll('.admin-section');
+      const adminMain = document.querySelector('.admin-main');
+      const vcmsTopbar = document.getElementById('vcms-topbar');
+      const vcmsSplit = document.getElementById('vcms-split');
+      
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabButtons.forEach(b => b.classList.remove('active'));
+          sections.forEach(s => s.classList.remove('active'));
+          
+          btn.classList.add('active');
+          const activeSection = document.getElementById(btn.dataset.tab);
+          if (activeSection) activeSection.classList.add('active');
+
+          // Cambiar títulos dinámicamente
+          const title = btn.textContent.trim();
+          document.getElementById('page-section-title').textContent = title;
+          if (btn.dataset.tab === 'leads-section') {
+            document.getElementById('page-section-subtitle').textContent = 'Gestión de cotizaciones y solicitudes recibidas.';
+          } else if (btn.dataset.tab === 'services-section') {
+            document.getElementById('page-section-subtitle').textContent = 'Administración dinámica de tarjetas de servicios del sitio público.';
+          } else if (btn.dataset.tab === 'team-section') {
+            document.getElementById('page-section-subtitle').textContent = 'Gestión de perfiles de integrantes del equipo en la sección Nosotros.';
+          } else if (btn.dataset.tab === 'pages-section') {
+            document.getElementById('page-section-subtitle').textContent = 'Edición visual con preview en vivo del sitio público.';
+          }
+
+          // Mostrar u ocultar el Visual CMS
+          const isVcms = btn.dataset.tab === 'pages-section';
+          if (isVcms) {
+            adminMain.classList.add('vcms-active');
+            if (vcmsTopbar) vcmsTopbar.classList.add('visible');
+            if (vcmsSplit) vcmsSplit.classList.add('visible');
+            // Init iframe loading
+            const loading = document.getElementById('vcms-iframe-loading');
+            const iframe = document.getElementById('vcms-preview-iframe');
+            if (iframe && loading) {
+              if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+                loading.classList.add('hidden');
+                setupIframeEditing(iframe);
+              } else {
+                iframe.onload = () => {
+                  loading.classList.add('hidden');
+                  setupIframeEditing(iframe);
+                };
+              }
+            }
+          } else {
+            adminMain.classList.remove('vcms-active');
+            if (vcmsTopbar) vcmsTopbar.classList.remove('visible');
+            if (vcmsSplit) vcmsSplit.classList.remove('visible');
+          }
+        });
+      });
+
+      // VCMS: Cambio de página en el topbar
+      document.querySelectorAll('.vcms-page-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          switchVcmsPage(btn.dataset.vcmsPage, btn.dataset.vcmsSrc);
+        });
+      });
+
+
+
+      // VCMS: Botón Publicar Cambios
+      const publishBtn = document.getElementById('vcms-publish-btn');
+      if (publishBtn) {
+        publishBtn.addEventListener('click', async () => {
+          const changes = Object.entries(vcmsState.pendingChanges);
+          if (changes.length === 0) {
+            showVcmsToast('No hay cambios pendientes para publicar.', 'error');
+            return;
+          }
+
+          publishBtn.disabled = true;
+          const originalHTML = publishBtn.innerHTML;
+          publishBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="16" y1="10" x2="12" y2="12"/></svg> Publicando...`;
+
+          let hasError = false;
+          for (const [key, content] of changes) {
+            const { error } = await supabaseClient
+              .from('page_contents')
+              .upsert({
+                page: vcmsState.currentPage,
+                section: 'general',
+                key: key,
+                content: content.trim(),
+                label: key,
+                type: 'text'
+              }, { onConflict: 'key' });
+
+            if (error) {
+              console.error('Error publishing:', key, error);
+              hasError = true;
+            } else {
+              const item = vcmsState.allContents.find(c => c.key === key);
+              if (item) item.content = content.trim();
+              else vcmsState.allContents.push({ page: vcmsState.currentPage, section: 'general', key, content: content.trim(), label: key, type: 'text' });
+            }
+          }
+
+          publishBtn.innerHTML = originalHTML;
+          publishBtn.disabled = false;
+
+          if (hasError) {
+            showVcmsToast('Error al publicar algunos cambios. Intenta de nuevo.', 'error');
+          } else {
+            vcmsState.pendingChanges = {};
+            showVcmsToast(`¡${changes.length} cambio(s) publicado(s) con éxito!`, 'success');
+          }
+        });
+      }
+
+      // Búsqueda en Leads
+      const searchInput = document.getElementById('leads-search-input');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase();
+          const filtered = localLeads.filter(lead => 
+            lead.client_name.toLowerCase().includes(query) || 
+            lead.client_email.toLowerCase().includes(query) || 
+            (lead.company_name && lead.company_name.toLowerCase().includes(query))
+          );
+          renderLeads(filtered);
+        });
+      }
+
+      // Botón Cerrar Sesión
+      const logoutBtn = document.getElementById('admin-logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+          showAdminConfirm(
+            'Cerrar Sesión',
+            '¿Estás seguro de que deseas cerrar sesión del panel de administración?',
+            async () => {
+              await supabaseClient.auth.signOut();
+              window.location.href = 'index.html';
+            }
+          );
+        });
+      }
+    }
+
+    // Modal de Confirmación Global
+    function showAdminConfirm(title, message, onAccept) {
+      const modal = document.getElementById('admin-confirm-modal');
+      const titleEl = document.getElementById('admin-confirm-title');
+      const msgEl = document.getElementById('admin-confirm-message');
+      const acceptBtn = document.getElementById('admin-confirm-accept-btn');
+
+      if (!modal || !acceptBtn) return;
+
+      if (titleEl) titleEl.textContent = title;
+      if (msgEl) msgEl.textContent = message;
+
+      // Reemplazar botón para limpiar listeners previos
+      const newAcceptBtn = acceptBtn.cloneNode(true);
+      acceptBtn.parentNode.replaceChild(newAcceptBtn, acceptBtn);
+
+      newAcceptBtn.addEventListener('click', async () => {
+        closeAdminModal('admin-confirm-modal');
+        if (typeof onAccept === 'function') {
+          await onAccept();
+        }
+      });
+
+      openAdminModal('admin-confirm-modal');
+    }
+
+    // Funciones Helper de Modal
+    window.openAdminModal = function(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.add('open');
+      }
+    }
+
+    window.closeAdminModal = function(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('open');
+      }
+    }
+
+    // Cerrar modales clicando fuera
+    document.querySelectorAll('.admin-modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeAdminModal(modal.id);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

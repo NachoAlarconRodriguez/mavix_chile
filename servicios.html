@@ -41,176 +41,446 @@
   </header>
 
   <!-- Services Section -->
-  <section id="servicios" class="subpage-section reveal">
+  <section id="servicios-seccion" class="subpage-section">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">Nuestras Soluciones</span>
-        <h2 class="section-title">Creamos estrategias medibles</h2>
-        <p class="section-desc">Desarrollamos planes con objetivos claros, acciones concretas y retornos de inversión reales. Analizamos y optimizamos cada paso.</p>
+        <span class="section-tag" data-cms-key="services_header_tag">Nuestras Soluciones</span>
+        <h2 class="section-title" data-cms-key="services_header_title">Estrategias y Ejecución de Primer Nivel</h2>
+        <p class="section-desc" data-cms-key="services_header_desc">Desarrollamos planes con objetivos claros, acciones concretas y retornos de inversión reales. Analizamos y optimizamos cada paso.</p>
       </div>
-      <div class="services-bento">
-        <!-- Web Card (spans 2 columns, 2 rows) -->
-        <div class="bento-card sb-web tilt-card">
-          <div class="bento-card-info">
-            <div class="bento-card-icon text-cyan">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-            </div>
-            <h3>Sitios Web</h3>
-            <p>Desarrollamos sitios web modernos, rápidos y 100% listos para convertir visitas en clientes reales con un diseño responsive de primer nivel.</p>
-            <a href="contacto.html" class="service-cta btn-terminal-cta" data-brand="servicio" data-service="Web">
-              Solicitar Información 
-              <span class="cta-arrow">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-              </span>
-            </a>
-          </div>
-          <div class="bento-visual-web">
-            <!-- Mock browser window with coding design -->
-            <div class="mock-browser">
-              <div class="mock-browser-header">
-                <span class="dot-red"></span>
-                <span class="dot-yellow"></span>
-                <span class="dot-green"></span>
-                <div class="mock-url-bar">
-                  <span class="mock-url-text">mavixchile.com</span>
-                  <div class="mock-url-progress"></div>
+
+      <div class="services-page-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="services-sidebar">
+          <nav class="services-sidebar-nav">
+            <ul>
+              <li><a href="#web" class="sidebar-link active" data-service="web"><span>01.</span> Sitios Web</a></li>
+              <li><a href="#social" class="sidebar-link" data-service="social"><span>02.</span> Social Growth</a></li>
+              <li><a href="#ads" class="sidebar-link" data-service="ads"><span>03.</span> Campañas Ads</a></li>
+              <li><a href="#branding" class="sidebar-link" data-service="branding"><span>04.</span> Branding y Diseño</a></li>
+              <li><a href="#audiovisual" class="sidebar-link" data-service="audiovisual"><span>05.</span> Fotografía & Dron</a></li>
+              <li><a href="#automations" class="sidebar-link" data-service="automations"><span>06.</span> Automatización & IA</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Services Content Area -->
+        <div class="services-content-area">
+          
+          <!-- 1. Sitios Web -->
+          <section id="web" class="service-detail-section reveal" data-service="web">
+            <div class="service-detail-info">
+              <div class="service-icon-header text-cyan">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                <h3>Sitios Web</h3>
+              </div>
+              <p class="service-detail-description">Desarrollamos sitios web modernos, rápidos y 100% listos para convertir visitas en clientes reales con un diseño responsive de primer nivel.</p>
+              
+              <div class="service-deliverables-grid">
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-cyan">•</span>
+                    <h4>Diseño Mobile-First</h4>
+                  </div>
+                  <p>Adaptado perfectamente a smartphones y tablets con interfaces táctiles fluidas.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-cyan">•</span>
+                    <h4>Velocidad Extrema</h4>
+                  </div>
+                  <p>Optimización LCP para cargas ultra rápidas en menos de 1 segundo.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-cyan">•</span>
+                    <h4>SEO Técnico Integrado</h4>
+                  </div>
+                  <p>Estructura optimizada desde el primer día para posicionar orgánicamente en Google.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-cyan">•</span>
+                    <h4>Foco en Conversión</h4>
+                  </div>
+                  <p>Llamados a la acción claros y embudos diseñados para captar leads de calidad.</p>
                 </div>
               </div>
-              <div class="mock-browser-body-container">
-                <div class="mock-code-view">
-                  <div class="code-line"><span class="c-blue">const</span> agency = <span class="c-green">"Mavix"</span>;</div>
-                  <div class="code-line"><span class="c-blue">const</span> goal = <span class="c-green">"Scale Your Business"</span>;</div>
-                  <div class="code-line"><span class="c-purple">function</span> <span class="c-yellow">initConversion</span>() {</div>
-                  <div class="code-line">&nbsp;&nbsp;<span class="c-yellow">optimizeLCP</span>();</div>
-                  <div class="code-line">&nbsp;&nbsp;<span class="c-yellow">boostROI</span>(<span class="c-purple">150</span>);</div>
-                  <div class="code-line">&nbsp;&nbsp;<span class="c-blue">return</span> <span class="c-green">"Success"</span>;</div>
-                  <div class="code-line">}</div>
-                </div>
-                <div class="mock-web-preview">
-                  <div class="preview-header">
-                    <span class="preview-logo">Mavix</span>
-                    <div class="preview-menu-dots">
-                      <span></span>
-                      <span></span>
-                      <span></span>
+
+              <a href="contacto.html" class="service-cta btn-terminal-cta" data-brand="servicio" data-service="Web">
+                Iniciar Proyecto Web ↗
+              </a>
+            </div>
+
+            <div class="service-detail-visual">
+              <div class="bento-visual-web">
+                <div class="mock-browser">
+                  <div class="mock-browser-header">
+                    <span class="dot-red"></span>
+                    <span class="dot-yellow"></span>
+                    <span class="dot-green"></span>
+                    <div class="mock-url-bar">
+                      <span class="mock-url-text">mavixchile.com</span>
+                      <div class="mock-url-progress"></div>
                     </div>
                   </div>
-                  <div class="preview-hero">
-                    <span class="preview-badge">LCP 0.6s</span>
-                    <div class="preview-title-line w-70"></div>
-                    <div class="preview-title-line w-50"></div>
-                    <div class="preview-button"></div>
-                  </div>
-                  <div class="preview-grid">
-                    <div class="preview-box"></div>
-                    <div class="preview-box"></div>
-                    <div class="preview-box"></div>
+                  <div class="mock-browser-body-container">
+                    <div class="mock-code-view">
+                      <div class="code-line"><span class="c-blue">const</span> agency = <span class="c-green">"Mavix"</span>;</div>
+                      <div class="code-line"><span class="c-blue">const</span> goal = <span class="c-green">"Scale Your Business"</span>;</div>
+                      <div class="code-line"><span class="c-purple">function</span> <span class="c-yellow">initConversion</span>() {</div>
+                      <div class="code-line">&nbsp;&nbsp;<span class="c-yellow">optimizeLCP</span>();</div>
+                      <div class="code-line">&nbsp;&nbsp;<span class="c-yellow">boostROI</span>(<span class="c-purple">150</span>);</div>
+                      <div class="code-line">&nbsp;&nbsp;<span class="c-blue">return</span> <span class="c-green">"Success"</span>;</div>
+                      <div class="code-line">}</div>
+                    </div>
+                    <div class="mock-web-preview">
+                      <div class="preview-header">
+                        <span class="preview-logo">Mavix</span>
+                        <div class="preview-menu-dots">
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </div>
+                      </div>
+                      <div class="preview-hero">
+                        <span class="preview-badge">LCP 0.6s</span>
+                        <div class="preview-title-line w-70"></div>
+                        <div class="preview-title-line w-50"></div>
+                        <div class="preview-button"></div>
+                      </div>
+                      <div class="preview-grid">
+                        <div class="preview-box"></div>
+                        <div class="preview-box"></div>
+                        <div class="preview-box"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        <!-- Social Media Card (spans 1 column, 1 row) -->
-        <div class="bento-card sb-social tilt-card">
-          <div class="bento-card-info">
-            <div class="bento-card-icon text-magenta">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <h3>Social Growth</h3>
-            <p>Gestionamos e impulsamos tus redes sociales con contenido dinámico enfocado en generar comunidades activas.</p>
-            <a href="contacto.html" class="service-cta btn-terminal-cta" data-brand="servicio" data-service="Redes Sociales">
-              Solicitar Información 
-              <span class="cta-arrow">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-              </span>
-            </a>
-          </div>
-          <div class="bento-visual-social">
-            <div class="social-radar">
-              <div class="radar-circle rc-1"></div>
-              <div class="radar-circle rc-2"></div>
-              <div class="radar-circle rc-3"></div>
-              <div class="radar-core"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color: var(--secondary);"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
-            </div>
-            <div class="social-likes-badge">
-              <span class="likes-number">150</span>
-              <span class="likes-label">Interacciones</span>
-            </div>
-          </div>
-        </div>
+          <!-- 2. Social Growth -->
+          <section id="social" class="service-detail-section reveal" data-service="social">
+            <div class="service-detail-info">
+              <div class="service-icon-header text-magenta">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <h3>Social Growth</h3>
+              </div>
+              <p class="service-detail-description">Gestionamos e impulsamos tus redes sociales con contenido dinámico enfocado en generar comunidades activas, visibilidad e interacciones reales.</p>
+              
+              <div class="service-deliverables-grid">
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-magenta">•</span>
+                    <h4>Estrategia Mensual</h4>
+                  </div>
+                  <p>Planificación de contenidos basada en tus objetivos de marca y tendencias del sector.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-magenta">•</span>
+                    <h4>Creación de Contenido</h4>
+                  </div>
+                  <p>Grabación y edición de videos cortos verticales (Reels/TikToks) de alto impacto visual.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-magenta">•</span>
+                    <h4>Copywriting & Engagement</h4>
+                  </div>
+                  <p>Textos persuasivos y atención interactiva a comentarios para estrechar la relación con tu audiencia.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-magenta">•</span>
+                    <h4>Reportes de Rendimiento</h4>
+                  </div>
+                  <p>Métricas mensuales detalladas de crecimiento de seguidores, alcance y conversión.</p>
+                </div>
+              </div>
 
-        <!-- Advertising Campaigns Card (spans 1 column, 1 row) -->
-        <div class="bento-card sb-ads tilt-card">
-          <div class="bento-card-info">
-            <div class="bento-card-icon text-yellow">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <a href="contacto.html" class="service-cta btn-terminal-cta" data-brand="servicio" data-service="Redes Sociales">
+                Potenciar Redes Sociales ↗
+              </a>
             </div>
-            <h3>Campañas Ads</h3>
-            <p>Creamos y optimizamos campañas de conversión de pago en Google Ads y Meta Ads para rentabilizar tu inversión publicitaria.</p>
-            <a href="contacto.html" class="service-cta btn-terminal-cta" data-brand="servicio" data-service="Campañas Ads">
-              Solicitar Información 
-              <span class="cta-arrow">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-              </span>
-            </a>
-          </div>
-          <div class="bento-visual-ads">
-            <div class="bento-visual-funnel">
-              <div class="funnel-stage stage-top">
-                <div class="funnel-ring"></div>
-                <span class="stage-label">Impresiones</span>
-              </div>
-              <div class="funnel-stage stage-middle">
-                <div class="funnel-ring"></div>
-                <span class="stage-label">Clics</span>
-              </div>
-              <div class="funnel-stage stage-bottom">
-                <div class="funnel-ring"></div>
-                <span class="stage-label">Leads</span>
-              </div>
-              <div class="funnel-particles">
-                <span class="particle p1"></span>
-                <span class="particle p2"></span>
-                <span class="particle p3"></span>
-                <span class="particle p4"></span>
-                <span class="particle p5"></span>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Branding & Design Card (spans 2 columns, 1 row) -->
-        <div class="bento-card sb-branding tilt-card theme-cyber">
-          <div class="bento-card-info">
-            <div class="bento-card-icon text-emerald">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/><path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"/></svg>
-            </div>
-            <h3>Branding y Diseño</h3>
-            <p>Diseñamos identidades visuales, logotipos y manuales de marca para destacar en un mercado altamente competitivo.</p>
-            <a href="contacto.html" class="service-cta btn-terminal-cta" data-brand="servicio" data-service="Branding">
-              Solicitar Información 
-              <span class="cta-arrow">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-              </span>
-            </a>
-          </div>
-          <div class="bento-visual-branding">
-            <div class="branding-letter">M</div>
-            <div class="branding-palette">
-              <span class="palette-label">Identidad de marca (auto):</span>
-              <div class="palette-swatches">
-                <div class="swatch active" style="background: #00a8e8;" title="Cyber Tech" data-theme="cyber"></div>
-                <div class="swatch" style="background: #d4af37;" title="Classic Lux" data-theme="lux"></div>
-                <div class="swatch" style="background: #ff007f;" title="Neon Retro" data-theme="retro"></div>
+            <div class="service-detail-visual">
+              <div class="bento-visual-social">
+                <div class="social-radar">
+                  <div class="radar-circle rc-1"></div>
+                  <div class="radar-circle rc-2"></div>
+                  <div class="radar-circle rc-3"></div>
+                  <div class="radar-core"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color: var(--secondary);"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+                </div>
+                <div class="social-likes-badge">
+                  <span class="likes-number">150</span>
+                  <span class="likes-label">Interacciones</span>
+                </div>
               </div>
             </div>
-          </div>
+          </section>
+
+          <!-- 3. Campañas Ads -->
+          <section id="ads" class="service-detail-section reveal" data-service="ads">
+            <div class="service-detail-info">
+              <div class="service-icon-header text-yellow">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <h3>Campañas Ads</h3>
+              </div>
+              <p class="service-detail-description">Creamos y optimizamos campañas de conversión de pago en Google Ads y Meta Ads para rentabilizar tu inversión publicitaria y generar ventas.</p>
+              
+              <div class="service-deliverables-grid">
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-yellow">•</span>
+                    <h4>Configuración de Píxeles</h4>
+                  </div>
+                  <p>Medición precisa de conversiones usando Meta Pixel y Google Tag Manager.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-yellow">•</span>
+                    <h4>Segmentación Avanzada</h4>
+                  </div>
+                  <p>Llegamos a tu cliente ideal mediante segmentación demográfica, por intereses y comportamiento.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-yellow">•</span>
+                    <h4>Optimización Diaria</h4>
+                  </div>
+                  <p>Ajuste de pujas y presupuestos para maximizar el retorno de la inversión (ROI).</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-yellow">•</span>
+                    <h4>A/B Testing de Anuncios</h4>
+                  </div>
+                  <p>Prueba constante de diferentes copys e imágenes para identificar el contenido más rentable.</p>
+                </div>
+              </div>
+
+              <a href="contacto.html" class="service-cta btn-terminal-cta" data-brand="servicio" data-service="Campañas Ads">
+                Iniciar Campañas Ads ↗
+              </a>
+            </div>
+
+            <div class="service-detail-visual">
+              <div class="bento-visual-ads">
+                <div class="bento-visual-funnel">
+                  <div class="funnel-stage stage-top">
+                    <div class="funnel-ring"></div>
+                    <span class="stage-label">Impresiones</span>
+                  </div>
+                  <div class="funnel-stage stage-middle">
+                    <div class="funnel-ring"></div>
+                    <span class="stage-label">Clics</span>
+                  </div>
+                  <div class="funnel-stage stage-bottom">
+                    <div class="funnel-ring"></div>
+                    <span class="stage-label">Leads</span>
+                  </div>
+                  <div class="funnel-particles">
+                    <span class="particle p1"></span>
+                    <span class="particle p2"></span>
+                    <span class="particle p3"></span>
+                    <span class="particle p4"></span>
+                    <span class="particle p5"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4. Branding y Diseño -->
+          <section id="branding" class="service-detail-section reveal" data-service="branding">
+            <div class="service-detail-info">
+              <div class="service-icon-header text-emerald">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/><path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"/></svg>
+                <h3>Branding y Diseño</h3>
+              </div>
+              <p class="service-detail-description">Diseñamos identidades visuales, logotipos y manuales de marca para destacar en un mercado altamente competitivo, logrando coherencia y estatus.</p>
+              
+              <div class="service-deliverables-grid">
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-emerald">•</span>
+                    <h4>Diseño de Logotipo</h4>
+                  </div>
+                  <p>Logotipos memorables y adaptados a formatos digitales, impresos y vectoriales.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-emerald">•</span>
+                    <h4>Paleta & Tipografías</h4>
+                  </div>
+                  <p>Selección de colores y tipografías corporativas alineadas a la psicología de tu marca.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-emerald">•</span>
+                    <h4>Manual de Marca</h4>
+                  </div>
+                  <p>Guía de uso para que tu identidad visual se aplique de forma correcta en cualquier medio.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-emerald">•</span>
+                    <h4>Diseño de Plantillas</h4>
+                  </div>
+                  <p>Plantillas editables para posts en redes sociales y presentaciones corporativas.</p>
+                </div>
+              </div>
+
+              <a href="contacto.html" class="service-cta btn-terminal-cta" data-brand="servicio" data-service="Branding">
+                Diseñar Identidad de Marca ↗
+              </a>
+            </div>
+
+            <div class="service-detail-visual">
+              <div class="bento-visual-branding">
+                <div class="branding-letter">M</div>
+                <div class="branding-palette">
+                  <span class="palette-label">Identidad de marca (auto):</span>
+                  <div class="palette-swatches">
+                    <div class="swatch active" style="background: #00a8e8;" title="Cyber Tech" data-theme="cyber"></div>
+                    <div class="swatch" style="background: #d4af37;" title="Classic Lux" data-theme="lux"></div>
+                    <div class="swatch" style="background: #ff007f;" title="Neon Retro" data-theme="retro"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 5. Fotografía & Video Dron -->
+          <section id="audiovisual" class="service-detail-section reveal" data-service="audiovisual">
+            <div class="service-detail-info">
+              <div class="service-icon-header text-cyan">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                <h3>Fotografía & Video Dron</h3>
+              </div>
+              <p class="service-detail-description">Creamos contenido de alta fidelidad para destacar en plataformas digitales. Capturamos tomas aéreas cinematográficas con drones y sesiones comerciales.</p>
+              
+              <div class="service-deliverables-grid">
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-cyan">•</span>
+                    <h4>Grabación Aérea 4K</h4>
+                  </div>
+                  <p>Imágenes aéreas dinámicas y de alta resolución capturadas por drones de última generación.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-cyan">•</span>
+                    <h4>Fotografía de Productos</h4>
+                  </div>
+                  <p>Sesiones fotográficas en estudio o exteriores enfocadas en resaltar el valor de tus productos.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-cyan">•</span>
+                    <h4>Edición Cinematográfica</h4>
+                  </div>
+                  <p>Montaje dinámico, corrección de color, diseño de sonido y efectos para redes y web.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-cyan">•</span>
+                    <h4>Videos Corporativos</h4>
+                  </div>
+                  <p>Presentación atractiva de tu negocio, instalaciones, equipo de trabajo o procesos.</p>
+                </div>
+              </div>
+
+              <a href="contacto.html" class="service-cta btn-terminal-cta" data-brand="servicio" data-service="Fotografia y Dron">
+                Agendar Sesión Audiovisual ↗
+              </a>
+            </div>
+
+            <div class="service-detail-visual">
+              <div class="bento-visual-audiovisual">
+                <div class="viewfinder-mock">
+                  <div class="viewfinder-corners">
+                    <span class="corner tl"></span>
+                    <span class="corner tr"></span>
+                    <span class="corner bl"></span>
+                    <span class="corner br"></span>
+                  </div>
+                  <div class="viewfinder-rec">
+                    <span class="rec-dot"></span>
+                    <span>REC</span>
+                  </div>
+                  <div class="viewfinder-ratio">4K 60FPS</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 6. Automatización & IA -->
+          <section id="automations" class="service-detail-section reveal" data-service="automations">
+            <div class="service-detail-info">
+              <div class="service-icon-header text-emerald">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>
+                <h3>Automatización & IA</h3>
+              </div>
+              <p class="service-detail-description">Diseñamos e integramos flujos inteligentes para ahorrar tiempo. Conectamos tus formularios web a sistemas CRM, WhatsApp y bases de datos.</p>
+              
+              <div class="service-deliverables-grid">
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-emerald">•</span>
+                    <h4>Integración de CRM</h4>
+                  </div>
+                  <p>Sincronización de leads capturados en tu web directamente a Pipedrive, HubSpot o similares.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-emerald">•</span>
+                    <h4>Automatización WhatsApp</h4>
+                  </div>
+                  <p>Configuración de respuestas instantáneas, derivación a agentes y notificaciones automáticas.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-emerald">•</span>
+                    <h4>Chatbots con IA</h4>
+                  </div>
+                  <p>Diseño de agentes inteligentes de IA conversacional entrenados con la información de tu negocio.</p>
+                </div>
+                <div class="deliverable-card">
+                  <div class="deliverable-header">
+                    <span class="deliverable-bullet text-emerald">•</span>
+                    <h4>Sincronización de Datos</h4>
+                  </div>
+                  <p>Flujos automatizados que conectan Excel, Gmail, CRMs y apps de mensajería (Zapier/Make).</p>
+                </div>
+              </div>
+
+              <a href="contacto.html" class="service-cta btn-terminal-cta" data-brand="servicio" data-service="Automatizaciones">
+                Automatizar mi Negocio ↗
+              </a>
+            </div>
+
+            <div class="service-detail-visual">
+              <div class="bento-visual-automations">
+                <div class="nodes-graph">
+                  <div class="node-item n1">Lead</div>
+                  <div class="node-arrow a1">➔</div>
+                  <div class="node-item n2">Chatbot IA</div>
+                  <div class="node-arrow a2">➔</div>
+                  <div class="node-item n3">CRM</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
         </div>
       </div>
     </div>
   </section>
+
 
   <!-- Footer -->
   <footer class="footer-modern">
@@ -231,24 +501,77 @@
           <a href="casos.html">Casos de Éxito</a>
           <a href="equipo.html">Equipo</a>
           <a href="contacto.html">Contacto</a>
+          <a href="#" class="admin-login-trigger">Acceso Equipo</a>
         </div>
       </div>
       <div class="footer-bottom-row">
         <div class="footer-copyright">
-          <p>Copyright © 2026 By Mavix Chile. Todos los derechos reservados.</p>
+          <p>Copyright © 2026 By Mavix Chile. | Desarrollado en colaboración con <a href="https://orangedesign.cl" target="_blank" class="orange-design-link"><img src="assets/orange_design.png" alt="Orange Design Logo" class="orange-design-logo"> Orange Design</a></p>
         </div>
         <div class="footer-meta-links">
-          <span class="contact-pill">📍 Sur de Chile</span>
-          <span class="contact-pill">📞 +56 9 8896 2524</span>
-          <a href="mailto:info@mavixchile.com" class="contact-pill">📧 info@mavixchile.com</a>
+          <span class="contact-pill"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="contact-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> Sur de Chile</span>
+          <a href="https://wa.me/56988962524" target="_blank" rel="noopener noreferrer" class="contact-pill"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="contact-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg> +56 9 8896 2524</a>
+          <a href="mailto:info@mavixchile.com" class="contact-pill"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="contact-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> info@mavixchile.com</a>
           <span class="footer-dot">•</span>
-          <a href="#">Privacidad</a>
-          <a href="#">Cookies</a>
+          <a href="#" class="privacy-trigger">Privacidad</a>
+          <a href="#" class="cookies-trigger">Cookies</a>
         </div>
       </div>
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js?v=8.0"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      const sections = document.querySelectorAll('.service-detail-section');
+
+      // Scroll Spy logic to highlight the active menu item in the sidebar
+      const observerOptions = {
+        root: null,
+        rootMargin: '-30% 0px -65% 0px', // Trigger when section is in the middle of the screen
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const activeId = entry.target.getAttribute('id');
+            sidebarLinks.forEach(link => {
+              if (link.getAttribute('href') === `#${activeId}`) {
+                link.classList.add('active');
+              } else {
+                link.classList.remove('active');
+              }
+            });
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+
+      // Smooth scrolling for sidebar links
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href');
+          const targetSection = document.querySelector(targetId);
+          if (targetSection) {
+            const headerOffset = 100; // offset to account for the fixed header
+            const elementPosition = targetSection.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>

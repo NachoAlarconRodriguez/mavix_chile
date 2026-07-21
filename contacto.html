@@ -45,8 +45,8 @@
     <div class="container">
       <div class="contact-container">
         <div class="contact-info">
-          <h2>¿Tienes un<br><span class="gradient-accent">proyecto</span> en mente?</h2>
-          <p>Escríbenos y diseñemos juntos una estrategia medible y ganadora para tu negocio. Nos pondremos en contacto contigo en menos de 24 horas.</p>
+          <h2 data-cms-key="contact_header_title">¿Tienes un<br><span class="gradient-accent">proyecto</span> en mente?</h2>
+          <p data-cms-key="contact_header_desc">Escríbenos y diseñemos juntos una estrategia medible y ganadora para tu negocio. Nos pondremos en contacto contigo en menos de 24 horas.</p>
           <div class="contact-details">
             <div class="contact-item">
               <div class="contact-icon">
@@ -54,7 +54,7 @@
               </div>
               <div class="contact-item-info">
                 <h4>Escríbenos</h4>
-                <p>info@mavixchile.com</p>
+                <p data-cms-key="contact_info_email">info@mavixchile.com</p>
               </div>
             </div>
             <div class="contact-item">
@@ -63,7 +63,7 @@
               </div>
               <div class="contact-item-info">
                 <h4>Llámanos</h4>
-                <p>+56 9 8896 2524</p>
+                <p data-cms-key="contact_info_phone">+56 9 8896 2524</p>
               </div>
             </div>
           </div>
@@ -100,6 +100,10 @@
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
                   <p>Audiovisual</p>
                 </div>
+                <div class="option-btn span-2" data-service="Automatizaciones">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>
+                  <p>Automatizaciones</p>
+                </div>
               </div>
               <div class="form-navigation">
                 <div></div> <!-- Placeholder to push next to right -->
@@ -121,49 +125,49 @@
               <div class="form-group">
                 <label class="form-label" for="client-phone">Teléfono / WhatsApp *</label>
                 <div class="phone-input-wrapper">
-                  <div class="custom-select-wrapper" id="country-code-dropdown">
-                    <div class="custom-select-trigger">
+                  <div class="custom-select-wrapper" id="country-code-dropdown" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-owns="country-code-list">
+                    <div class="custom-select-trigger" tabindex="0" aria-label="Código de país de teléfono" aria-controls="country-code-list">
                       <span class="selected-flag">🇨🇱</span>
                       <span class="selected-code">+56</span>
                       <svg class="select-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <div class="custom-select-options">
-                      <div class="custom-option selected" data-value="+56" data-flag="🇨🇱">
+                    <div class="custom-select-options" id="country-code-list" role="listbox">
+                      <div class="custom-option selected" data-value="+56" data-flag="🇨🇱" role="option" aria-selected="true" tabindex="-1">
                         <span class="option-flag">🇨🇱</span>
                         <span class="option-code">+56</span>
                         <span class="option-country">Chile</span>
                       </div>
-                      <div class="custom-option" data-value="+54" data-flag="🇦🇷">
+                      <div class="custom-option" data-value="+54" data-flag="🇦🇷" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-flag">🇦🇷</span>
                         <span class="option-code">+54</span>
                         <span class="option-country">Argentina</span>
                       </div>
-                      <div class="custom-option" data-value="+55" data-flag="🇧🇷">
+                      <div class="custom-option" data-value="+55" data-flag="🇧🇷" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-flag">🇧🇷</span>
                         <span class="option-code">+55</span>
                         <span class="option-country">Brasil</span>
                       </div>
-                      <div class="custom-option" data-value="+57" data-flag="🇨🇴">
+                      <div class="custom-option" data-value="+57" data-flag="🇨🇴" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-flag">🇨🇴</span>
                         <span class="option-code">+57</span>
                         <span class="option-country">Colombia</span>
                       </div>
-                      <div class="custom-option" data-value="+51" data-flag="🇵🇪">
+                      <div class="custom-option" data-value="+51" data-flag="🇵🇪" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-flag">🇵🇪</span>
                         <span class="option-code">+51</span>
                         <span class="option-country">Perú</span>
                       </div>
-                      <div class="custom-option" data-value="+1" data-flag="🇺🇸">
+                      <div class="custom-option" data-value="+1" data-flag="🇺🇸" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-flag">🇺🇸</span>
                         <span class="option-code">+1</span>
                         <span class="option-country">USA</span>
                       </div>
-                      <div class="custom-option" data-value="+34" data-flag="🇪🇸">
+                      <div class="custom-option" data-value="+34" data-flag="🇪🇸" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-flag">🇪🇸</span>
                         <span class="option-code">+34</span>
                         <span class="option-country">España</span>
                       </div>
-                      <div class="custom-option" data-value="+52" data-flag="🇲🇽">
+                      <div class="custom-option" data-value="+52" data-flag="🇲🇽" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-flag">🇲🇽</span>
                         <span class="option-code">+52</span>
                         <span class="option-country">México</span>
@@ -200,25 +204,25 @@
               <div class="form-grid">
                 <div class="form-group">
                   <label class="form-label" for="company-size">Tamaño de la Empresa *</label>
-                  <div class="custom-select-wrapper" id="company-size-dropdown">
-                    <div class="custom-select-trigger">
+                  <div class="custom-select-wrapper" id="company-size-dropdown" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-owns="company-size-list">
+                    <div class="custom-select-trigger" tabindex="0" aria-controls="company-size-list">
                       <span class="selected-text">Selecciona una opción...</span>
                       <svg class="select-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <div class="custom-select-options">
-                      <div class="custom-option" data-value="micro">
+                    <div class="custom-select-options" id="company-size-list" role="listbox">
+                      <div class="custom-option" data-value="micro" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-title">Micro Emprendimiento</span>
                         <span class="option-desc">1 - 5 personas</span>
                       </div>
-                      <div class="custom-option" data-value="pyme">
+                      <div class="custom-option" data-value="pyme" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-title">Pyme</span>
                         <span class="option-desc">6 - 50 personas</span>
                       </div>
-                      <div class="custom-option" data-value="mediana">
+                      <div class="custom-option" data-value="mediana" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-title">Mediana Empresa</span>
                         <span class="option-desc">51 - 200 personas</span>
                       </div>
-                      <div class="custom-option" data-value="grande">
+                      <div class="custom-option" data-value="grande" role="option" aria-selected="false" tabindex="-1">
                         <span class="option-title">Gran Empresa</span>
                         <span class="option-desc">Más de 200 personas</span>
                       </div>
@@ -256,6 +260,8 @@
                 <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
               </div>
             </div>
+            <!-- Screen Reader Announcer for Accessibility -->
+            <div id="form-validation-announcer" class="sr-only" aria-live="assertive"></div>
           </form>
 
           <!-- Interactive Success Message -->
@@ -288,24 +294,26 @@
           <a href="casos.html">Casos de Éxito</a>
           <a href="equipo.html">Equipo</a>
           <a href="contacto.html" class="active">Contacto</a>
+          <a href="#" class="admin-login-trigger">Acceso Equipo</a>
         </div>
       </div>
       <div class="footer-bottom-row">
         <div class="footer-copyright">
-          <p>Copyright © 2026 By Mavix Chile. Todos los derechos reservados.</p>
+          <p>Copyright © 2026 By Mavix Chile. | Desarrollado en colaboración con <a href="https://orangedesign.cl" target="_blank" class="orange-design-link"><img src="assets/orange_design.png" alt="Orange Design Logo" class="orange-design-logo"> Orange Design</a></p>
         </div>
         <div class="footer-meta-links">
-          <span class="contact-pill">📍 Sur de Chile</span>
-          <span class="contact-pill">📞 +56 9 8896 2524</span>
-          <a href="mailto:info@mavixchile.com" class="contact-pill">📧 info@mavixchile.com</a>
+          <span class="contact-pill"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="contact-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> Sur de Chile</span>
+          <a href="https://wa.me/56988962524" target="_blank" rel="noopener noreferrer" class="contact-pill"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="contact-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg> +56 9 8896 2524</a>
+          <a href="mailto:info@mavixchile.com" class="contact-pill"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="contact-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> info@mavixchile.com</a>
           <span class="footer-dot">•</span>
-          <a href="#">Privacidad</a>
-          <a href="#">Cookies</a>
+          <a href="#" class="privacy-trigger">Privacidad</a>
+          <a href="#" class="cookies-trigger">Cookies</a>
         </div>
       </div>
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js?v=8.0"></script>
 </body>
 </html>
