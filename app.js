@@ -2458,7 +2458,16 @@ document.addEventListener('DOMContentLoaded', () => {
             contents.forEach(item => {
               const el = document.querySelector(`[data-cms-key="${item.key}"]`);
               if (el) {
-                if (item.key === 'contact_info_whatsapp') {
+                if (el.tagName === 'IMG') {
+                  el.src = item.content;
+                } else if (item.type === 'image' || item.key.includes('_img_')) {
+                  if (el.tagName === 'IMG') el.src = item.content;
+                  else {
+                    el.style.backgroundImage = `url("${item.content}")`;
+                    el.style.backgroundSize = 'cover';
+                    el.style.backgroundPosition = 'center';
+                  }
+                } else if (item.key === 'contact_info_whatsapp') {
                   el.setAttribute('href', item.content);
                 } else if (item.key === 'contact_info_email' && el.tagName === 'A') {
                   el.setAttribute('href', `mailto:${item.content}`);

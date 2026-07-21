@@ -134,7 +134,7 @@
       </div>
       <div class="services-bento">
         <!-- Web Card (spans 2 columns, 2 rows) -->
-        <div class="bento-card sb-web tilt-card">
+        <div class="bento-card sb-web tilt-card" data-cms-key="cms_home_img_bento_card_sb_web">
           <div class="bento-card-info">
             <div class="bento-card-icon text-cyan">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
@@ -197,7 +197,7 @@
         </div>
 
         <!-- Social Media Card (spans 1 column, 1 row) -->
-        <div class="bento-card sb-social tilt-card">
+        <div class="bento-card sb-social tilt-card" data-cms-key="cms_home_img_bento_card_sb_social">
           <div class="bento-card-info">
             <div class="bento-card-icon text-magenta">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -226,7 +226,7 @@
         </div>
 
         <!-- Advertising Campaigns Card (spans 1 column, 1 row) -->
-        <div class="bento-card sb-ads tilt-card">
+        <div class="bento-card sb-ads tilt-card" data-cms-key="cms_home_img_bento_card_sb_ads">
           <div class="bento-card-info">
             <div class="bento-card-icon text-yellow">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -266,7 +266,7 @@
         </div>
 
         <!-- Branding & Design Card (spans 2 columns, 1 row) -->
-        <div class="bento-card sb-branding tilt-card theme-cyber">
+        <div class="bento-card sb-branding tilt-card theme-cyber" data-cms-key="cms_home_img_bento_card_sb_branding">
           <div class="bento-card-info">
             <div class="bento-card-icon text-emerald">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/><path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"/></svg>
@@ -305,7 +305,7 @@
       </div>
       <div class="services-bento two-columns">
         <!-- Audiovisual Studio Card (Fotografia y Video Dron) -->
-        <div class="bento-card sb-audiovisual bento-half tilt-card">
+        <div class="bento-card sb-audiovisual bento-half tilt-card" data-cms-key="cms_home_img_bento_card_sb_audiovisual">
           <div class="bento-card-info">
             <div class="bento-card-icon text-cyan">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
@@ -338,7 +338,7 @@
         </div>
 
         <!-- Automations Card (Funnels & IA) -->
-        <div class="bento-card sb-automations bento-half tilt-card">
+        <div class="bento-card sb-automations bento-half tilt-card" data-cms-key="cms_home_img_bento_card_sb_automations">
           <div class="bento-card-info">
             <div class="bento-card-icon text-emerald">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>
@@ -557,5 +557,55 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js?v=8.0"></script>
+
+  <!-- VCMS: Hidratación de imágenes desde Supabase -->
+  <script>
+    (async function vcmsHydrateImages() {
+      try {
+        const SUPABASE_URL = 'https://bhrdqdeuafqtbkdxajpo.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJocmRxZGV1YWZxdGJrZHhhanBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNzg5NDYsImV4cCI6MjA5NzY1NDk0Nn0.oeogO0OngILPpXxJiZKbixR7auEb6xfcm7O982e58H0';
+
+        if (!window.supabase) return;
+        const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Determinar la página actual basándose en el nombre del archivo
+        const filename = window.location.pathname.split('/').pop() || 'index.html';
+        const pageMap = {
+          'index.html': 'home',
+          '': 'home',
+          'nosotros.html': 'nosotros',
+          'servicios.html': 'servicios',
+          'casos.html': 'casos',
+          'contacto.html': 'contacto'
+        };
+        const currentPage = pageMap[filename] || filename.replace('.html', '');
+
+        // Obtener todos los contenidos de tipo imagen para esta página
+        const { data, error } = await db
+          .from('page_contents')
+          .select('key, content, type')
+          .eq('page', currentPage)
+          .eq('type', 'image');
+
+        if (error || !data || data.length === 0) return;
+
+        // Aplicar cada imagen guardada al elemento correspondiente
+        data.forEach(({ key, content }) => {
+          const el = document.querySelector(`[data-cms-key="${key}"]`);
+          if (!el) return;
+          if (el.tagName === 'IMG') {
+            el.src = content;
+          } else {
+            el.style.backgroundImage = `url("${content}")`;
+            el.style.backgroundSize = 'cover';
+            el.style.backgroundPosition = 'center';
+          }
+        });
+      } catch (e) {
+        // Silencioso en producción: no rompe la página si falla
+        console.warn('[VCMS] Error al hidratar imágenes:', e);
+      }
+    })();
+  </script>
 </body>
 </html>
