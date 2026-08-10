@@ -437,11 +437,11 @@
             <p class="testimonial-quote">"El trabajo en redes sociales con Mavix ha sido clave para nuestra marca de jugos. Captaron de inmediato nuestra vibra alegre y fresca, logrando aumentar el engagement orgánico con Reels de gran calidad visual."</p>
             <div class="testimonial-author">
               <div class="author-img">
-                <div class="initials-avatar initials-zeste">CP</div>
+                <div class="initials-avatar initials-zeste">FT</div>
               </div>
               <div class="author-info">
-                <h4>Constanza Pérez</h4>
-                <p>Co-Fundadora, Zeste Limón</p>
+                <h4>Fiorella Tavano</h4>
+                <p>Fundadora, Zeste Limón</p>
               </div>
             </div>
           </div>
@@ -595,8 +595,12 @@
           if (!el) return;
           if (el.tagName === 'IMG') {
             el.src = content;
-          } else {
+          } else if (el.classList.contains('sim-screen')) {
             el.style.backgroundImage = `url("${content}")`;
+            el.style.backgroundSize = 'cover';
+            el.style.filter = 'none';
+          } else {
+            el.style.backgroundImage = `linear-gradient(rgba(13, 13, 20, 0.88), rgba(13, 13, 20, 0.88)), url("${content}")`;
             el.style.backgroundSize = 'cover';
             el.style.backgroundPosition = 'center';
           }

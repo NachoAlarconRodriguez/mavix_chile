@@ -807,6 +807,25 @@ document.addEventListener('DOMContentLoaded', () => {
       startAutoPlay();
     }
 
+    // Touch swipe support for mobile devices
+    const testimonialContainer = document.querySelector('.testimonial-container');
+    if (testimonialContainer) {
+      let touchStartX = 0;
+      let touchEndX = 0;
+      testimonialContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      testimonialContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        if (touchStartX - touchEndX > 40) {
+          nextSlide(); // Swipe left -> Next slide
+        } else if (touchEndX - touchStartX > 40) {
+          prevSlide(); // Swipe right -> Prev slide
+        }
+      }, { passive: true });
+    }
+
     function startAutoPlay() {
       autoPlayTimer = setInterval(nextSlide, 7000);
     }
@@ -2462,8 +2481,12 @@ document.addEventListener('DOMContentLoaded', () => {
                   el.src = item.content;
                 } else if (item.type === 'image' || item.key.includes('_img_')) {
                   if (el.tagName === 'IMG') el.src = item.content;
-                  else {
+                  else if (el.classList.contains('sim-screen')) {
                     el.style.backgroundImage = `url("${item.content}")`;
+                    el.style.backgroundSize = 'cover';
+                    el.style.filter = 'none';
+                  } else {
+                    el.style.backgroundImage = `linear-gradient(rgba(13, 13, 20, 0.88), rgba(13, 13, 20, 0.88)), url("${item.content}")`;
                     el.style.backgroundSize = 'cover';
                     el.style.backgroundPosition = 'center';
                   }
@@ -2480,10 +2503,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
               }
             });
+            updateTestimonialInitials();
           }
         });
     }
   }
+
+  // Helper to dynamically calculate initials for avatars based on author full name
+  function updateTestimonialInitials() {
+    const authorContainers = document.querySelectorAll('.testimonial-author');
+    authorContainers.forEach(container => {
+      const nameEl = container.querySelector('.author-info h4');
+      const avatarEl = container.querySelector('.initials-avatar');
+      if (nameEl && avatarEl) {
+        const fullName = nameEl.textContent.trim();
+        if (fullName) {
+          const nameParts = fullName.split(/\s+/).filter(p => p.length > 0);
+          let initials = '';
+          if (nameParts.length >= 2) {
+            initials = (nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0)).toUpperCase();
+          } else if (nameParts.length === 1 && nameParts[0].length >= 2) {
+            initials = nameParts[0].substring(0, 2).toUpperCase();
+          } else if (fullName.length > 0) {
+            initials = fullName.charAt(0).toUpperCase();
+          }
+          if (initials) {
+            avatarEl.textContent = initials;
+          }
+        }
+      }
+    });
+  }
+
+  // Initial execution for static content
+  updateTestimonialInitials();
 
 });
 

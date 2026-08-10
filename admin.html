@@ -134,6 +134,25 @@
       padding-top: 1.5rem;
     }
 
+    .mavix-os-card-link {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      margin-top: 1.2rem;
+      padding: 0.9rem 1.1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 229, 255, 0.22);
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.07) 0%, rgba(0, 168, 232, 0.02) 100%);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mavix-os-card-link:hover {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.16) 0%, rgba(0, 168, 232, 0.08) 100%);
+      border-color: #00e5ff;
+      box-shadow: 0 8px 22px rgba(0, 229, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
     /* Área de Contenido Principal */
     .admin-main {
       flex-grow: 1;
@@ -1229,6 +1248,18 @@
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
           Editor Visual Web
         </button>
+        <a href="https://stitch-blu-os-dashboard-hcevrbdqx-mavixchile.vercel.app/" target="_blank" rel="noopener noreferrer" class="mavix-os-card-link">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.45rem;">
+            <span style="font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #00e5ff; opacity: 0.9;">PLATAFORMA EXTERNA</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <div style="width: 30px; height: 30px; border-radius: 9px; background: rgba(0, 229, 255, 0.15); display: flex; align-items: center; justify-content: center; color: #00e5ff;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+            </div>
+            <span style="font-weight: 700; font-size: 0.95rem; color: #ffffff; letter-spacing: -0.2px;">Mavix OS</span>
+          </div>
+        </a>
       </nav>
 
       <div class="sidebar-footer">
@@ -2151,9 +2182,12 @@
         if (isImage) {
           if (el.tagName === 'IMG') {
             el.src = value;
-          } else {
-            // Es un contenedor con background-image
+          } else if (el.classList.contains('sim-screen')) {
             el.style.backgroundImage = `url("${value}")`;
+            el.style.backgroundSize = 'cover';
+            el.style.filter = 'none';
+          } else {
+            el.style.backgroundImage = `linear-gradient(rgba(13, 13, 20, 0.88), rgba(13, 13, 20, 0.88)), url("${value}")`;
             el.style.backgroundSize = 'cover';
             el.style.backgroundPosition = 'center';
           }
@@ -2315,8 +2349,8 @@
           });
         });
 
-        // 1. EDICIÓN DE IMÁGENES Y FONDOS: Inyectar botón flotante "📷 Cambiar Foto" en todas las tarjetas e <img>
-        const imageSelector = 'img, .bento-card, .case-card, .team-card, .testimonial-card, .hero-bg, .mock-web-preview, [style*="background-image"], [data-cms-img-key]';
+        // 1. EDICIÓN DE IMÁGENES Y FONDOS: Inyectar botón flotante "📷 Cambiar Foto / Captura" en todas las tarjetas, capturas e <img>
+        const imageSelector = 'img, .sim-screen, .bento-card, .case-card, .team-card, .testimonial-card, .hero-bg, .mock-web-preview, [style*="background-image"], [data-cms-img-key]';
         const imgTargets = iDoc.querySelectorAll(imageSelector);
 
         imgTargets.forEach((target, idx) => {
@@ -2331,6 +2365,8 @@
               // Para <img>: usar alt limpio o src filename
               stableLabel = (target.alt || target.src.split('/').pop().split('.')[0] || 'foto')
                 .toLowerCase().replace(/[^a-z0-9]/g, '_');
+            } else if (target.classList.contains('sim-screen')) {
+              stableLabel = `screen_${target.dataset.project || idx}`;
             } else {
               // Para contenedores: usar todas sus clases relevantes (excluye utilitarias)
               const relevantClasses = Array.from(target.classList)
@@ -2357,9 +2393,10 @@
           if (!badge && target.tagName !== 'IMG') {
             badge = iDoc.createElement('div');
             badge.className = 'vcms-image-picker-badge';
+            const badgeLabel = target.classList.contains('sim-screen') ? 'Cambiar Captura Web' : 'Cambiar Foto';
             badge.innerHTML = `
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-              <span>Cambiar Foto</span>
+              <span>${badgeLabel}</span>
             `;
             target.appendChild(badge);
           }
@@ -2393,8 +2430,12 @@
                 // Actualizar imagen o fondo en la réplica al instante
                 if (target.tagName === 'IMG') {
                   target.src = compressed.dataUrl;
-                } else {
+                } else if (target.classList.contains('sim-screen')) {
                   target.style.backgroundImage = `url("${compressed.dataUrl}")`;
+                  target.style.backgroundSize = 'cover';
+                  target.style.filter = 'none';
+                } else {
+                  target.style.backgroundImage = `linear-gradient(rgba(13, 13, 20, 0.88), rgba(13, 13, 20, 0.88)), url("${compressed.dataUrl}")`;
                   target.style.backgroundSize = 'cover';
                   target.style.backgroundPosition = 'center';
                 }
@@ -2403,7 +2444,7 @@
                 const key = target.dataset.cmsKey;
                 vcmsState.pendingChanges[key] = compressed.dataUrl;
 
-                showVcmsToast(`⚡ ¡Foto cambiada y optimizada! ${originalMB} MB ➔ ${compressedKB} KB (-${savings}% de peso)`, 'success');
+                showVcmsToast(`⚡ ¡Imagen cambiada y optimizada! ${originalMB} MB ➔ ${compressedKB} KB (-${savings}% de peso)`, 'success');
               } catch (err) {
                 console.error("Error optimizando imagen:", err);
                 showVcmsToast('Error al optimizar la imagen. Intenta con otro archivo.', 'error');
