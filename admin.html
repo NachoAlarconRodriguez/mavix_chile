@@ -1248,7 +1248,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
           Editor Visual Web
         </button>
-        <a href="https://stitch-blu-os-dashboard-hcevrbdqx-mavixchile.vercel.app/" target="_blank" rel="noopener noreferrer" class="mavix-os-card-link">
+        <a href="https://mavixospanel.vercel.app/" target="_blank" rel="noopener noreferrer" class="mavix-os-card-link">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.45rem;">
             <span style="font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #00e5ff; opacity: 0.9;">PLATAFORMA EXTERNA</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -2027,6 +2027,15 @@
       container.innerHTML = '';
 
       team.forEach(member => {
+        const cargo = member.cargo || member.role || '';
+        const bio = member.description || member.bio || '';
+        let skillsArr = [];
+        if (member.keywords && typeof member.keywords === 'string' && member.keywords.trim() !== '') {
+          skillsArr = member.keywords.split(',').map(s => s.trim()).filter(Boolean);
+        } else if (Array.isArray(member.skills) && member.skills.length > 0) {
+          skillsArr = member.skills;
+        }
+
         const card = document.createElement('div');
         card.className = 'cms-card';
         card.innerHTML = `
@@ -2034,13 +2043,13 @@
             <img class="cms-card-avatar" src="${member.avatar_url || 'assets/default_avatar.png'}" alt="${member.name}">
             <div class="cms-card-title">
               <h3>${member.name}</h3>
-              <p>${member.role}</p>
+              <p>${cargo}</p>
             </div>
           </div>
           <div class="cms-card-body">
-            <p>${member.bio || ''}</p>
+            <p>${bio}</p>
             <div class="services-tag-list" style="margin-top:0.75rem;">
-              ${Array.isArray(member.skills) ? member.skills.map(s => `<span class="service-tag" style="background:rgba(255,255,255,0.05);color:#cbd5e1;">${s}</span>`).join('') : ''}
+              ${skillsArr.map(s => `<span class="service-tag" style="background:rgba(255,255,255,0.05);color:#cbd5e1;">${s}</span>`).join('')}
             </div>
           </div>
           <div class="cms-card-actions">
@@ -2056,11 +2065,20 @@
       const member = localTeam.find(m => m.id === id);
       if (!member) return;
 
+      const cargo = member.cargo || member.role || '';
+      const bio = member.description || member.bio || '';
+      let skillsArr = [];
+      if (member.keywords && typeof member.keywords === 'string' && member.keywords.trim() !== '') {
+        skillsArr = member.keywords.split(',').map(s => s.trim()).filter(Boolean);
+      } else if (Array.isArray(member.skills) && member.skills.length > 0) {
+        skillsArr = member.skills;
+      }
+
       document.getElementById('edit-team-id').value = member.id;
       document.getElementById('edit-team-name').value = member.name;
-      document.getElementById('edit-team-role').value = member.role;
-      document.getElementById('edit-team-bio').value = member.bio || '';
-      document.getElementById('edit-team-skills').value = Array.isArray(member.skills) ? member.skills.join(', ') : '';
+      document.getElementById('edit-team-role').value = cargo;
+      document.getElementById('edit-team-bio').value = bio;
+      document.getElementById('edit-team-skills').value = skillsArr.join(', ');
       document.getElementById('edit-team-avatar').value = member.avatar_url || '';
 
       openAdminModal('edit-team-modal');
@@ -2077,6 +2095,7 @@
       
       const skillsInput = document.getElementById('edit-team-skills').value;
       const skills = skillsInput ? skillsInput.split(',').map(s => s.trim()).filter(Boolean) : [];
+      const keywords = skills.join(', ');
 
       const saveBtn = document.getElementById('save-team-btn');
       saveBtn.textContent = 'Guardando...';
@@ -2084,7 +2103,16 @@
 
       const { error } = await supabaseClient
         .from('team_members')
-        .update({ name, role, bio, avatar_url, skills })
+        .update({
+          name,
+          role,
+          cargo: role,
+          bio,
+          description: bio,
+          avatar_url,
+          skills,
+          keywords
+        })
         .eq('id', id);
 
       if (error) {
@@ -2419,7 +2447,7 @@
               const file = evt.target.files[0];
               if (!file) return;
 
-              showVcmsToast('⚡ Comprimiendo y optimizando imagen a WebP...', 'info');
+              showVcmsToast('⚡ Comprimiendo imagen a WebP y subiendo a la nube...', 'info');
 
               try {
                 const compressed = await compressAndOptimizeImage(file);
@@ -2427,27 +2455,61 @@
                 const compressedKB = (compressed.compressedSize / 1024).toFixed(0);
                 const savings = Math.max(0, Math.round((1 - compressed.compressedSize / compressed.originalSize) * 100));
 
-                // Actualizar imagen o fondo en la réplica al instante
+                // Vista previa instantánea con URL local temporal (no Base64)
+                const localPreviewUrl = URL.createObjectURL(compressed.blob);
                 if (target.tagName === 'IMG') {
-                  target.src = compressed.dataUrl;
+                  target.src = localPreviewUrl;
                 } else if (target.classList.contains('sim-screen')) {
-                  target.style.backgroundImage = `url("${compressed.dataUrl}")`;
+                  target.style.backgroundImage = `url("${localPreviewUrl}")`;
                   target.style.backgroundSize = 'cover';
                   target.style.filter = 'none';
                 } else {
-                  target.style.backgroundImage = `linear-gradient(rgba(13, 13, 20, 0.88), rgba(13, 13, 20, 0.88)), url("${compressed.dataUrl}")`;
+                  target.style.backgroundImage = `linear-gradient(rgba(13, 13, 20, 0.88), rgba(13, 13, 20, 0.88)), url("${localPreviewUrl}")`;
                   target.style.backgroundSize = 'cover';
                   target.style.backgroundPosition = 'center';
                 }
 
-                // Registrar en cambios pendientes
+                // Subir blob a Supabase Storage
                 const key = target.dataset.cmsKey;
-                vcmsState.pendingChanges[key] = compressed.dataUrl;
+                const storagePath = `cms/${key}.webp`;
 
-                showVcmsToast(`⚡ ¡Imagen cambiada y optimizada! ${originalMB} MB ➔ ${compressedKB} KB (-${savings}% de peso)`, 'success');
+                const { error: uploadError } = await supabaseClient.storage
+                  .from('site-images')
+                  .upload(storagePath, compressed.blob, {
+                    contentType: 'image/webp',
+                    cacheControl: '3600',
+                    upsert: true
+                  });
+
+                if (uploadError) {
+                  throw new Error(uploadError.message);
+                }
+
+                // Obtener URL pública permanente
+                const { data: urlData } = supabaseClient.storage
+                  .from('site-images')
+                  .getPublicUrl(storagePath);
+
+                const publicUrl = urlData.publicUrl;
+
+                // Guardar solo la URL (no Base64) en cambios pendientes
+                vcmsState.pendingChanges[key] = publicUrl;
+
+                // Actualizar preview con URL permanente
+                if (target.tagName === 'IMG') {
+                  target.src = publicUrl;
+                } else if (target.classList.contains('sim-screen')) {
+                  target.style.backgroundImage = `url("${publicUrl}")`;
+                } else {
+                  target.style.backgroundImage = `linear-gradient(rgba(13, 13, 20, 0.88), rgba(13, 13, 20, 0.88)), url("${publicUrl}")`;
+                }
+
+                URL.revokeObjectURL(localPreviewUrl);
+
+                showVcmsToast(`✅ ¡Imagen subida a la nube! ${originalMB} MB ➔ ${compressedKB} KB (-${savings}% de peso). Presiona "Publicar Cambios" para guardar.`, 'success');
               } catch (err) {
-                console.error("Error optimizando imagen:", err);
-                showVcmsToast('Error al optimizar la imagen. Intenta con otro archivo.', 'error');
+                console.error("Error subiendo imagen:", err);
+                showVcmsToast('Error al subir la imagen: ' + err.message, 'error');
               }
 
               fileInput.value = '';

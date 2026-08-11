@@ -2188,9 +2188,15 @@ document.addEventListener('DOMContentLoaded', () => {
           if (members && members.length > 0) {
             teamGrid.innerHTML = '';
             members.forEach(member => {
-              const skillsList = Array.isArray(member.skills)
-                ? member.skills.map(s => `<span class="skill-pill">${s}</span>`).join('')
-                : '';
+              const cargo = member.cargo || member.role || '';
+              const bio = member.description || member.bio || '';
+              let skillsArr = [];
+              if (member.keywords && typeof member.keywords === 'string' && member.keywords.trim() !== '') {
+                skillsArr = member.keywords.split(',').map(s => s.trim()).filter(Boolean);
+              } else if (Array.isArray(member.skills) && member.skills.length > 0) {
+                skillsArr = member.skills;
+              }
+              const skillsList = skillsArr.map(s => `<span class="skill-pill">${s}</span>`).join('');
 
               const card = document.createElement('div');
               card.className = 'team-card tilt-card';
@@ -2202,8 +2208,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="team-info">
                   <h3>${member.name}</h3>
-                  <div class="team-role">${member.role}</div>
-                  <p class="team-bio">${member.bio || ''}</p>
+                  <div class="team-role">${cargo}</div>
+                  <p class="team-bio">${bio}</p>
                 </div>
                 <div class="team-skills">
                   ${skillsList}
