@@ -2750,25 +2750,22 @@ header .container {
 }
 
 .screen-blu {
-  background-image: url('assets/blu_screen.png');
-  filter: invert(0.9) hue-rotate(180deg) brightness(0.85) contrast(1.1);
+  background-image: url('assets/blu_screen.png?v=3.0');
 }
 .screen-vintage {
-  background-image: url('assets/vintage_instagram_clean.png');
+  background-image: url('assets/vintage_instagram_clean.png?v=4.0');
 }
 .screen-colonos {
-  background-image: url('assets/colonos_screen.png');
-  filter: invert(0.9) hue-rotate(180deg) brightness(0.85) contrast(1.1);
+  background-image: url('assets/colonos_screen.png?v=2.0');
 }
 .screen-burger {
-  background-image: url('assets/burger_instagram_clean.png');
+  background-image: url('assets/burger_instagram_clean.png?v=2.0');
 }
 .screen-parma {
-  background-image: url('assets/parma_screen.png');
-  filter: invert(0.9) hue-rotate(180deg) brightness(0.85) contrast(1.1);
+  background-image: url('assets/parma_screen.png?v=2.0');
 }
 .screen-rafting {
-  background-image: url('assets/rafting_instagram_clean.png');
+  background-image: url('assets/rafting_instagram_clean.png?v=5.0');
 }
 
 .sim-screen[style*="background-image"] {
@@ -2963,21 +2960,12 @@ header .container {
   overflow: hidden;
 }
 
-/* Custom dynamic spotlight follows matching each member's neon halo color */
+/* Dynamic spotlight follows cursor on card hover */
 .team-card .spotlight {
-  background: radial-gradient(350px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 229, 255, 0.15), transparent 45%);
-}
-.team-card[data-member="javier"] .spotlight {
-  background: radial-gradient(350px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 168, 232, 0.15), transparent 45%);
-}
-.team-card[data-member="tahia"] .spotlight,
-.team-card[data-member="azul"] .spotlight {
-  background: radial-gradient(350px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 229, 255, 0.15), transparent 45%);
-}
-.team-card[data-member="ignacio"] .spotlight,
-.team-card[data-member="martin"] .spotlight,
-.team-card[data-member="martín"] .spotlight {
-  background: radial-gradient(350px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(79, 195, 247, 0.15), transparent 45%);
+  background: radial-gradient(350px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 229, 255, 0.12), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .team-card:hover .spotlight {
@@ -2986,22 +2974,15 @@ header .container {
 
 .team-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-  border-color: rgba(0, 229, 255, 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+  border-color: rgba(0, 229, 255, 0.35);
 }
-
-.team-card[data-member="javier"]:hover { border-color: var(--primary); }
-.team-card[data-member="tahia"]:hover,
-.team-card[data-member="azul"]:hover { border-color: #00e5ff; }
-.team-card[data-member="ignacio"]:hover,
-.team-card[data-member="martin"]:hover,
-.team-card[data-member="martín"]:hover { border-color: hsl(205, 95%, 65%); }
 
 .team-avatar {
   width: 140px;
   height: 140px;
   border-radius: 50%;
-  border: 2px solid rgba(0, 229, 255, 0.3);
+  border: 2px solid rgba(0, 229, 255, 0.25);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -3012,34 +2993,9 @@ header .container {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
-.team-card[data-member="javier"] .team-avatar { border-color: rgba(0, 168, 232, 0.3); }
-.team-card[data-member="tahia"] .team-avatar,
-.team-card[data-member="azul"] .team-avatar { border-color: rgba(0, 229, 255, 0.3); }
-.team-card[data-member="ignacio"] .team-avatar,
-.team-card[data-member="martin"] .team-avatar,
-.team-card[data-member="martín"] .team-avatar { border-color: rgba(79, 195, 247, 0.3); }
-
 .team-card:hover .team-avatar {
   border-color: #00e5ff;
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
-  transform: scale(1.05);
-}
-.team-card[data-member="javier"]:hover .team-avatar {
-  border-color: var(--primary);
-  box-shadow: 0 0 15px rgba(0, 168, 232, 0.5);
-  transform: scale(1.05);
-}
-.team-card[data-member="tahia"]:hover .team-avatar,
-.team-card[data-member="azul"]:hover .team-avatar {
-  border-color: #00e5ff;
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
-  transform: scale(1.05);
-}
-.team-card[data-member="ignacio"]:hover .team-avatar,
-.team-card[data-member="martin"]:hover .team-avatar,
-.team-card[data-member="martín"]:hover .team-avatar {
-  border-color: hsl(205, 95%, 65%);
-  box-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.4);
   transform: scale(1.05);
 }
 
@@ -3070,13 +3026,6 @@ header .container {
   color: #00e5ff;
 }
 
-.team-card[data-member="javier"] .team-role { color: var(--primary, #00a8e8); }
-.team-card[data-member="tahia"] .team-role,
-.team-card[data-member="azul"] .team-role { color: #00e5ff; }
-.team-card[data-member="ignacio"] .team-role,
-.team-card[data-member="martin"] .team-role,
-.team-card[data-member="martín"] .team-role { color: hsl(205, 95%, 65%); }
-
 .team-bio {
   color: var(--text-muted);
   font-size: 0.88rem;
@@ -3104,20 +3053,10 @@ header .container {
   transition: all 0.3s ease;
 }
 
-.team-card[data-member="javier"]:hover .skill-pill {
-  border-color: rgba(0, 168, 232, 0.25);
-  color: var(--primary);
-  background: rgba(0, 168, 232, 0.05);
-}
-.team-card[data-member="tahia"]:hover .skill-pill {
-  border-color: rgba(28, 196, 205, 0.25);
-  color: hsl(185, 95%, 60%);
-  background: rgba(28, 196, 205, 0.05);
-}
-.team-card[data-member="ignacio"]:hover .skill-pill {
-  border-color: rgba(79, 195, 247, 0.25);
-  color: hsl(205, 95%, 65%);
-  background: rgba(79, 195, 247, 0.05);
+.team-card:hover .skill-pill {
+  border-color: rgba(0, 229, 255, 0.25);
+  color: #00e5ff;
+  background: rgba(0, 229, 255, 0.05);
 }
 
 /* Team Card Footer & CTA */
@@ -3150,23 +3089,11 @@ header .container {
   transition: all 0.3s ease;
 }
 
-.team-card[data-member="javier"] .team-socials a:hover {
+.team-card .team-socials a:hover {
   color: #0b0b0f;
-  background: var(--primary);
-  border-color: var(--primary);
-  box-shadow: 0 0 10px rgba(0, 168, 232, 0.4);
-}
-.team-card[data-member="tahia"] .team-socials a:hover {
-  color: #0b0b0f;
-  background: hsl(185, 95%, 60%);
-  border-color: hsl(185, 95%, 60%);
-  box-shadow: 0 0 10px rgba(28, 196, 205, 0.4);
-}
-.team-card[data-member="ignacio"] .team-socials a:hover {
-  color: #0b0b0f;
-  background: hsl(205, 95%, 65%);
-  border-color: hsl(205, 95%, 65%);
-  box-shadow: 0 0 10px rgba(79, 195, 247, 0.4);
+  background: #00e5ff;
+  border-color: #00e5ff;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
 }
 
 .btn-card-cta {
@@ -3182,23 +3109,11 @@ header .container {
   white-space: nowrap;
 }
 
-.team-card[data-member="javier"] .btn-card-cta:hover {
-  border-color: var(--primary);
-  background: rgba(0, 168, 232, 0.05);
-  color: var(--primary);
-  box-shadow: 0 0 12px rgba(0, 168, 232, 0.2);
-}
-.team-card[data-member="tahia"] .btn-card-cta:hover {
-  border-color: hsl(185, 95%, 60%);
-  background: rgba(28, 196, 205, 0.05);
-  color: hsl(185, 95%, 60%);
-  box-shadow: 0 0 12px rgba(28, 196, 205, 0.2);
-}
-.team-card[data-member="ignacio"] .btn-card-cta:hover {
-  border-color: hsl(205, 95%, 65%);
-  background: rgba(79, 195, 247, 0.05);
-  color: hsl(205, 95%, 65%);
-  box-shadow: 0 0 12px rgba(79, 195, 247, 0.2);
+.team-card .btn-card-cta:hover {
+  border-color: #00e5ff;
+  background: rgba(0, 229, 255, 0.05);
+  color: #00e5ff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
 }
 
 /* Stats Counter Banner - Carousel Ticker */
